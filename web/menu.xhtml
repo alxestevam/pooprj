@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+	<h:form>
+	<p:menubar>
+            <p:menuitem value="Início" url="/faces/index.xhtml"></p:menuitem>
+            
+		<p:submenu label="Cadastro">
+                    <p:menuitem value="Produto" url="/faces/produto.xhtml"></p:menuitem>
+                    <p:menuitem value="Categoria" url="/faces/categoria.xhtml"></p:menuitem>
+                    <p:menuitem value="Cliente" url="/faces/cliente.xhtml"></p:menuitem>
+                    <p:menuitem value="Pedido" url="/faces/pedido.xhtml"></p:menuitem>
+		</p:submenu>
+	</p:menubar>
+</h:form>
+</ui:composition>
+

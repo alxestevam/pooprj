@@ -1,0 +1,114 @@
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+        <h:outputText value="Cadastro de Cliente" />
+    </ui:define>
+
+    <ui:define name="principal">
+        <h1>Cadastro Clientes</h1>
+        <h:form id="formCliente">
+            <p:panelGrid columns="2" id="cadastroClientePanel">
+                <p:outputLabel value="Nome:" />
+                <p:inputText   value="#{clienteMB.cliente.nome}" required="true" requiredMessage="Campo Nome é obrigatório"/>
+                <p:outputLabel value="Endereço: " />
+                <p:inputText   value="#{clienteMB.cliente.endereco}" required="true" requiredMessage="Campo Endereço é obrigatório"/>
+                <p:outputLabel value="Telefone:"/>
+                <p:inputText   value="#{clienteMB.cliente.telefone}" required="true" requiredMessage="Campo Telefone é obrigatório"/>
+                <p:outputLabel value="Status"/>
+                <p:inputText   value="#{clienteMB.cliente.status}" required="true" requiredMessage="Campo Status é obrigatório"/>
+                <p:outputLabel value="Limite"/>
+                <p:inputText   value="#{clienteMB.cliente.limite}" required="true" requiredMessage="Campo Limite é obrigatório"/>
+                
+            </p:panelGrid>
+            <p:commandButton value="Salvar"
+                             action="#{clienteMB.addCliente()}" 
+                             update=":formCliente" />
+
+            <p:growl id="msgs" showDetail="false"/>
+            <p:dataTable id="dataTableCliente"
+                         var="f" value="#{clienteMB.clientes}"
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15"
+                         editable="true"
+                         selection="#{clienteMB.selectedCliente}"
+                         selectionMode="single"
+                         rowKey="#{f.codigo}"
+                         >
+
+
+
+                <p:ajax event="rowEdit" listener="#{clienteMB.onRowEdit}" update=":formCliente:msgs" />
+
+                <p:column headerText="Codigo">
+                    <p:outputLabel value="#{f.codigo}"/>
+                </p:column>
+                <p:column headerText="Nome" filterBy="#{f.nome}" 
+                          filterMatchMode="contains" >
+                    <p:outputLabel value="#{f.nome}"/>
+                </p:column>
+                <p:column headerText="Endereco">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{f.endereco}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{f.endereco}" style="width:100%" label="Endereço"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Telefone">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{f.telefone}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{f.telefone}" style="width:100%" label="Telefone"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Status" >
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{f.status}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{f.status}" style="width:100%" label="Status"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
+                <p:column headerText="Limite" >
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{f.limite}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{f.limite}" style="width:100%" label="Limite"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+                <p:column style="width:32px">
+                    <p:commandLink styleClass="ui-icon ui-icon-trash" 
+                                   actionListener="#{clienteMB.removeCliente(f)}"
+                                   update="dataTableCliente"
+                                   />
+                </p:column>
+
+            </p:dataTable>
+
+            <p:contextMenu for="dataTableCliente">
+                <p:menuitem value="Remove" 
+                            update="dataTableCliente" 
+                            icon="ui-icon-close" 
+                            actionListener="#{clienteMB.removeCliente}"/>
+            </p:contextMenu>
+
+
+
+
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>
+
+
+
+
+

@@ -1,0 +1,195 @@
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+        <h:outputText value="Cadastro de Pedido" />
+    </ui:define>
+
+    <ui:define name="principal">
+        <h1>Novo Pedido</h1>
+        <h:form id="formPedido">
+            <p:growl id="msgs" showDetail="true"/>
+            <p:panelGrid columns="2" id="cadastroProdPanel">
+                <p:outputLabel value="Código do cliente:"/>
+                <p:selectOneMenu value="#{pedidoMB.pedido.cliente}" converter="converterCliente" style="width:100%">
+                    <f:selectItems value="#{pedidoMB.clientes}" var="aux"
+                                   itemValue="#{aux}" itemLabel="#{aux.codigo}" />
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Produto:"/>
+                <p:selectOneMenu value="#{pedidoMB.produto}" converter="converterProduto" style="width:100%">
+                    <f:selectItems value="#{pedidoMB.produtos}" var="aux"
+                                   itemValue="#{aux}" itemLabel="#{aux.nome}" />
+                </p:selectOneMenu>
+                <p:outputLabel value="Quantidade"/>
+                <p:inputText value="#{pedidoMB.quantidade}"/>
+                
+                
+            </p:panelGrid>
+            <br/>
+            <p:commandButton value="Adicionar Item"
+                             action="#{pedidoMB.addItemPedido}" 
+                             update=":formPedido" />
+            
+            
+            
+            <p:dataTable id="dataTableItemPedido"
+                         var="item" value="#{pedidoMB.pedido.listItens}"
+                         editable="true"
+                         selection="#{pedidoMB.selectedItem}"
+                         selectionMode="single"
+                         rowKey="#{item.numero}"
+                         >
+                
+                
+                <p:ajax event="rowEdit" listener="#{pedidoMB.onRowEdit}" update=":formPedido:msgs" />
+                
+                <p:column headerText="Número">
+                    <p:outputLabel value="#{item.numero}"/>
+                </p:column>
+
+                <p:column headerText="Produto">
+                    <p:outputLabel value="#{item.produto.nome}"/>
+                </p:column>
+                
+                <p:column headerText="Quantidade">
+                    <p:outputLabel value="#{item.quantidade}"/>
+                </p:column>
+                
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+                <p:column style="width:32px">
+                    <p:commandLink styleClass="ui-icon ui-icon-trash" 
+                                   actionListener="#{pedidoMB.removeItemPedido(pedidoMB.produto, item)}"
+                                   update="dataTableItemPedido"
+                                   />
+                </p:column>
+            </p:dataTable>
+            
+            <p:commandButton value="Salvar"
+                             action="#{pedidoMB.addPedido}" 
+                             update=":formPedido" />
+
+            <h1>Pedidos</h1>
+            
+            
+            <p:dataTable id="dataTablePedido"
+                         var="p" value="#{pedidoMB.pedidos}"
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15"
+                         editable="true"
+                         selection="#{pedidoMB.selectedPedido}"
+                         selectionMode="single"
+                         rowKey="#{p.numero}"
+                         >
+
+                <f:facet name="header">
+                Botão direito para ver as opções
+                </f:facet>
+
+                <p:ajax event="rowEdit" listener="#{pedidoMB.onRowEdit}" update=":formPedido:msgs" />
+                
+                <p:column headerText="Cliente" filterBy="#{p.cliente.codigo}" 
+                          filterMatchMode="contains">
+                    <p:outputLabel value="#{p.cliente.codigo}"/>
+                </p:column>
+
+                <p:column headerText="Pedido">
+                    <p:outputLabel value="#{p.numero}"/>
+                </p:column>
+                
+                <p:column headerText="Data">
+                    <p:outputLabel value="#{p.data}"/>
+                </p:column>
+                
+                <p:column headerText="Total">
+                    <p:outputLabel value="#{p.totalPedido()}"/>
+                </p:column>
+                
+                <p:column headerText="Imposto">
+                    <p:outputLabel value="#{p.totalImposto()}"/>
+                </p:column>
+                
+                <p:column style="width:32px">
+                    <p:commandLink styleClass="ui-icon ui-icon-trash" 
+                                   actionListener="#{pedidoMB.removePedido(f)}"
+                                   update="dataTablePedido"
+                                   />
+                </p:column>
+
+            </p:dataTable>
+
+            <p:contextMenu for="dataTablePedido">
+                <p:menuitem value="View" update=":pedidoInfoForm" icon="pi pi-search" oncomplete="PF('pedidoDialog').show()"/>
+                <p:menuitem value="Remove" 
+                            update="dataTablePedido" 
+                            icon="ui-icon-close" 
+                            actionListener="#{pedidoMB.removePedido()}"/>
+            </p:contextMenu>
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="dialogs">
+        <h:form id="pedidoInfoForm">
+            
+        
+        <p:dialog header="Itens do pedido" widgetVar="pedidoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="pedidoDetail" style="text-align:center;">
+                    <h:panelGroup rendered="#{not empty pedidoMB.selectedPedido}">
+                        <p:dataTable id="dataTableItemPedidoDetail"
+                         var="itemPedido" value="#{pedidoMB.selectedPedido.listItens}"
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15"
+                         editable="true"
+                         selection="#{pedidoMB.selectedItem}"
+                         selectionMode="single"
+                         rowKey="#{itemPedido.numero}"
+                         >
+                            
+                            <p:ajax event="rowEdit" listener="#{pedidoMB.onRowEdit}" update=":formPedido:msgs" />
+
+                            <p:column headerText="Número">
+                                <p:outputLabel value="#{itemPedido.numero}"/>
+                            </p:column>
+
+                            <p:column headerText="Quantidade">
+                                <p:outputLabel value="#{itemPedido.quantidade}"/>
+                            </p:column>
+
+                            <p:column headerText="Produto">
+                                <p:outputLabel value="#{itemPedido.produto.nome}"/>
+                            </p:column>
+
+                            <p:column headerText="Preço">
+                                <p:outputLabel value="R$ #{itemPedido.totalItem()}"/>
+                            </p:column>
+
+                            <p:column style="width:32px">
+                                <p:commandLink styleClass="ui-icon ui-icon-trash" 
+                                               actionListener="#{pedidoMB.removeItemPedido(pedidoMB.selectedPedido, itemPedido)}"
+                                               update="dataTableItemPedidoDetail"
+                                               />
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:panelGroup>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+
+
+
+
+
