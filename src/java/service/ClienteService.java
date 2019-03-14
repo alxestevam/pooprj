@@ -7,6 +7,9 @@ package service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import model.Cliente;
 import model.Pedido;
 
@@ -16,6 +19,13 @@ import model.Pedido;
  */
 public class ClienteService implements Serializable {
 
+    private final EntityManagerFactory emf;
+    
+    public ClienteService()
+    {
+        emf = Persistence.createEntityManagerFactory("ProjetoPrjLoja");
+    }
+    
     private final ArrayList<Cliente> clientes = Dados.getClientes();
     private final PedidoService pedidoService = new PedidoService();
 
@@ -54,6 +64,14 @@ public class ClienteService implements Serializable {
         }
         return null;
     }
-
+    
+    public void salvar(Cliente cliente)
+    {
+            EntityManager em = emf.createEntityManager();
+            em.getTransaction().begin();
+                em.persist(cliente);
+            em.getTransaction().commit();
+        em.close();
+    }
 
 }

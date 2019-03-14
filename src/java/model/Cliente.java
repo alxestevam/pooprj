@@ -5,20 +5,35 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import service.Dados;
 
 /**
  *
  * @author 141812
  */
-public class Cliente {
+
+@Entity
+public class Cliente implements Serializable{
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column(name="CLIENTE_ID")
     private int codigo;
     private String nome;
     private String endereco;
     private String telefone;
     private int status;
     private double limite;
+    
+    @Transient
     private ArrayList<Pedido> pedidos = new ArrayList<>();
     
     public Cliente() {
