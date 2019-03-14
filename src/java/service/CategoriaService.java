@@ -6,6 +6,9 @@
 package service;
 
 import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import model.Categoria;
 import model.Produto;
 
@@ -17,6 +20,8 @@ public class CategoriaService {
 
     private ArrayList<Categoria> categorias = Dados.getCategorias();
     private ArrayList<Produto> produtos = Dados.getProdutos();
+    
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("PrjLojaPU");
 
     public void addCategoria(Categoria categoria) {
         boolean add = true;
@@ -58,6 +63,14 @@ public class CategoriaService {
 
         }
         return null;
+    }
+    
+    public void salvar(Categoria c) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(c);
+        em.getTransaction().commit();
+        em.close();
     }
 
 

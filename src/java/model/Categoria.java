@@ -5,11 +5,23 @@
  */
 package model;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.SEQUENCE;
+import javax.persistence.Id;
+
 /**
  *
  * @author 141812
  */
-public class Categoria {
+@Entity
+public class Categoria implements Serializable {
+    @Id
+    @GeneratedValue(strategy=SEQUENCE)
+    @Column(name="CATEGORIA_ID")
+    private int id;
     private String descricao;
     
     public Categoria() {
