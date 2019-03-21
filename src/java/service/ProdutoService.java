@@ -6,6 +6,9 @@
 package service;
 
 import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import model.Cliente;
 import model.Pedido;
 import model.Produto;
@@ -18,6 +21,7 @@ public class ProdutoService {
 
     private ArrayList<Produto> produtos = Dados.getProdutos();
     private final ArrayList<Cliente> clientes = Dados.getClientes();
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("PrjLojaPU");
 
     public void addProduto(Produto produto) {
         if(produtos.isEmpty()) {
@@ -56,6 +60,14 @@ public class ProdutoService {
 
         }
         return null;
+    }
+    
+    public void salvar(Produto produto) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(produto);
+        em.getTransaction().commit();
+        em.close();
     }
 
 

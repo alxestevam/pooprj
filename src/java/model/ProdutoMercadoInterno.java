@@ -5,11 +5,20 @@
  */
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  *
  * @author 141812
  */
 public class ProdutoMercadoInterno extends Produto {
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column(name="PRODMI_ID")
+    private int id;
     private boolean incentivo;
 
     public ProdutoMercadoInterno() {
