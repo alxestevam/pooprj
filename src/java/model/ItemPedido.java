@@ -5,13 +5,26 @@
  */
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 /**
  *
  * @author 141812
  */
+@Entity
 public class ItemPedido {
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column(name="ITEMPEDIDO_ID")
     private int numero;
     private int quantidade;
+    
+    @Transient
     private Produto produto;
     
     public ItemPedido(int numero, int quantidade, Produto produto) {

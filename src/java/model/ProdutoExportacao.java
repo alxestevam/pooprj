@@ -5,11 +5,20 @@
  */
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  *
  * @author 141812
  */
 public class ProdutoExportacao extends Produto {
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column(name="PRODEXP_ID")
+    private int id;
     private String destino;
 
     public ProdutoExportacao() {
