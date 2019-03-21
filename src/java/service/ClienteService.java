@@ -23,7 +23,7 @@ public class ClienteService implements Serializable {
     
     public ClienteService()
     {
-        emf = Persistence.createEntityManagerFactory("ProjetoPrjLoja");
+        emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
     
     private final ArrayList<Cliente> clientes = Dados.getClientes();

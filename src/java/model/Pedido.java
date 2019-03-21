@@ -5,16 +5,30 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  *
  * @author 141812
  */
-public class Pedido {
+
+@Entity
+public class Pedido implements Serializable{
+    
+    @Id
+    @Column(name="PEDIDO_ID")
     private long numero;
     private Date data;
+    
+    @Transient
     private ArrayList<ItemPedido> itens = new ArrayList<>();
     private Cliente cliente;
     private int numItem = 0;
