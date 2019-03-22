@@ -5,11 +5,21 @@
  */
 package model;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  *
  * @author 141812
  */
-public class Produto {
+
+@Entity
+public class Produto implements Serializable{
+    
+    @Id
+    @Column (name="PRODUTO_ID")
     private int codigo;
     private String nome;
     private Categoria categoria;
