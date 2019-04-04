@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import service.Dados;
 
@@ -33,7 +34,7 @@ public class Cliente implements Serializable{
     private int status;
     private double limite;
     
-    @Transient
+    @OneToMany
     private ArrayList<Pedido> pedidos = new ArrayList<>();
     
     public Cliente() {

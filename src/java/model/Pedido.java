@@ -28,7 +28,7 @@ public class Pedido implements Serializable{
     private long numero;
     private Date data;
     
-    @Transient
+    @OneToMany
     private ArrayList<ItemPedido> itens = new ArrayList<>();
     private Cliente cliente;
     private int numItem = 0;

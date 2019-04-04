@@ -122,7 +122,7 @@ public class ProdutoMB {
         this.selectedCategoria = selectedCategoria;
     }
     
-    public ArrayList<Categoria> getCategorias(){
+    public List<Categoria> getCategorias(){
         return categoriaService.getCategorias();
     }
 

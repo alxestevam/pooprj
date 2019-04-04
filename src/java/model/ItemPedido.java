@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -24,8 +24,13 @@ public class ItemPedido {
     private int numero;
     private int quantidade;
     
-    @Transient
+    @ManyToOne
     private Produto produto;
+
+    public ItemPedido() {
+    }
+    
+    
     
     public ItemPedido(int numero, int quantidade, Produto produto) {
         this.numero = numero;

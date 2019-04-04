@@ -21,7 +21,13 @@ public class ProdutoService {
 
     private ArrayList<Produto> produtos = Dados.getProdutos();
     private final ArrayList<Cliente> clientes = Dados.getClientes();
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("PrjLojaPU");
+    private EntityManagerFactory emf;
+
+    public ProdutoService() {
+        emf = Persistence.createEntityManagerFactory("PrjLojaPU");
+    }
+    
+    
 
     public void addProduto(Produto produto) {
         if(produtos.isEmpty()) {

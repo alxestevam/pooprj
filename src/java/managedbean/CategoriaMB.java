@@ -34,7 +34,7 @@ public class CategoriaMB {
     }
     
     public void addCategoria() {
-        service.addCategoria(categoria);
+        service.salvar(categoria);
         categoria = new Categoria();
     }
     

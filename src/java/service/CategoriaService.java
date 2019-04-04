@@ -6,6 +6,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -21,7 +22,13 @@ public class CategoriaService {
     private ArrayList<Categoria> categorias = Dados.getCategorias();
     private ArrayList<Produto> produtos = Dados.getProdutos();
     
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("PrjLojaPU");
+    private EntityManagerFactory emf;
+
+    public CategoriaService() {
+        emf = Persistence.createEntityManagerFactory("PrjLojaPU");
+    }
+    
+    
 
     public void addCategoria(Categoria categoria) {
         boolean add = true;
@@ -51,8 +58,10 @@ public class CategoriaService {
             categorias.remove(categoria);
     }
 
-    public ArrayList<Categoria> getCategorias() {
-        return categorias;
+    public List<Categoria> getCategorias() {
+        EntityManager em = emf.createEntityManager();
+        List<Categoria> c = em.createQuery("select c from Categoria c").getResultList();
+        return c;
     }
 
     public Categoria getCategoriaByDescricao(String value) {
