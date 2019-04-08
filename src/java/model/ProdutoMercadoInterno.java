@@ -6,6 +6,7 @@
 package model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,20 +15,17 @@ import javax.persistence.Id;
  *
  * @author 141812
  */
+@Entity
 public class ProdutoMercadoInterno extends Produto {
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    @Column(name="PRODMI_ID")
-    private int id;
     private boolean incentivo;
 
     public ProdutoMercadoInterno() {
-        this.setTipo(1);
+        //this.setTipo(1);
     }
 
     public ProdutoMercadoInterno(int codigo, String nome, Categoria categoria, double preco, int moeda, double imposto, boolean incentivo) {
         super(codigo, nome, categoria, preco, moeda, imposto);
-        this.setTipo(1);
+        //this.setTipo(1);
         this.incentivo = incentivo;
     }
     

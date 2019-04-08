@@ -6,6 +6,7 @@
 package model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,20 +15,17 @@ import javax.persistence.Id;
  *
  * @author 141812
  */
+@Entity
 public class ProdutoExportacao extends Produto {
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    @Column(name="PRODEXP_ID")
-    private int id;
     private String destino;
 
     public ProdutoExportacao() {
-        this.setTipo(0);
+        //this.setTipo(0);
     }
 
     public ProdutoExportacao(int codigo, String nome, Categoria categoria, double preco, int moeda, double imposto, String destino) {
         super(codigo, nome, categoria, preco, moeda, imposto);
-        this.setTipo(0);
+        //this.setTipo(0);
         this.destino = destino;
     }
     

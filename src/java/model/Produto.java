@@ -7,8 +7,13 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -16,17 +21,22 @@ import javax.persistence.Id;
  */
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "TIPO")
 public class Produto implements Serializable{
     
     @Id
     @Column (name="PRODUTO_ID")
     private int codigo;
     private String nome;
+    
+    @ManyToOne
+    @JoinColumn(name="CATEGORIA_ID")
     private Categoria categoria;
     private double preco;
     private int moeda;
     private double imposto;
-    private int tipo;
+    //private int tipo;
     
     public Produto () {
         
@@ -50,18 +60,18 @@ public class Produto implements Serializable{
         this.preco = p.getPreco();
         this.moeda = p.getMoeda();
         this.imposto = p.getImposto();
-        this.tipo = p.getTipo();
+        //this.tipo = p.getTipo();
     }
     
     
 
-    public int getTipo() {
+    /*public int getTipo() {
         return tipo;
     }
 
     public void setTipo(int tipo) {
         this.tipo = tipo;
-    }   
+    } */  
 
     public int getCodigo() {
         return codigo;

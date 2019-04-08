@@ -5,6 +5,7 @@
  */
 package managedbean;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -26,7 +27,7 @@ import service.ProdutoService;
  */
 @ManagedBean
 @SessionScoped
-public class PedidoMB {
+public class PedidoMB implements Serializable {
     private Pedido pedido = new Pedido();
     private final PedidoService service = new PedidoService();
     private Pedido selectedPedido;

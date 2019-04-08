@@ -28,15 +28,15 @@
                 <p:outputLabel value="Preco"/>
                 <p:inputText   value="#{produtoMB.produto.preco}"/>
                 <p:outputLabel value="Destinação:"/>
-                <p:selectOneMenu value="#{produtoMB.produto.tipo}" style="width:100%">
+                <p:selectOneMenu value="#{produtoMB.escolhaTipo}" style="width:100%">
                     <f:selectItem itemLabel="Exportação" itemValue="0"/>
                     <f:selectItem itemLabel="Mercado Interno" itemValue="1"/>
                     <p:ajax event="change" process="cadastroProdPanel" update="cadastroProdPanel"/>
                 </p:selectOneMenu>
-                <p:outputLabel rendered="#{produtoMB.produto.tipo eq 0}" value="Destino: "/>
-                <p:inputText   rendered="#{produtoMB.produto.tipo eq 0}" value="#{produtoMB.destino}"/>
-                <p:outputLabel rendered="#{produtoMB.produto.tipo eq 1}" value="Incentivo:"/>
-                <p:selectBooleanCheckbox rendered="#{produtoMB.produto.tipo eq 1}" value="#{produtoMB.incentivo}" label="" />
+                <p:outputLabel rendered="#{produtoMB.escolhaTipo eq 0}" value="Destino: "/>
+                <p:inputText   rendered="#{produtoMB.escolhaTipo eq 0}" value="#{produtoMB.destino}"/>
+                <p:outputLabel rendered="#{produtoMB.escolhaTipo eq 1}" value="Incentivo:"/>
+                <p:selectBooleanCheckbox rendered="#{produtoMB.escolhaTipo eq 1}" value="#{produtoMB.incentivo}" label="" />
                 
             </p:panelGrid>
             <p:commandButton value="Salvar"

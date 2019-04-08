@@ -5,6 +5,7 @@
  */
 package managedbean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,7 @@ import service.ProdutoService;
  */
 @ManagedBean
 @SessionScoped
-public class ProdutoMB {
+public class ProdutoMB implements Serializable {
     private Produto produto = new Produto();
     private ProdutoService service = new ProdutoService();
     private Produto selectedProduto;
@@ -37,6 +38,7 @@ public class ProdutoMB {
     private String destino;
     private boolean incentivo;
     private int escolhaTipo;
+
 
     public int getEscolhaTipo() {
         return escolhaTipo;
@@ -80,13 +82,13 @@ public class ProdutoMB {
     public void addProduto() {
         Categoria cat = produto.getCategoria();
         if (cat != null) {
-            if(produto.getTipo() == 0) {
+            if(getEscolhaTipo() == 0) {
                 ProdutoExportacao produtoExportacao = new ProdutoExportacao();
                 produtoExportacao.espProduto(produto, destino);
                 
                 service.addProduto(produtoExportacao);
             }
-            else if(produto.getTipo() == 1){
+            else if(getEscolhaTipo() == 1){
                 ProdutoMercadoInterno produtoMercadoInterno = new ProdutoMercadoInterno();
                 produtoMercadoInterno.espProduto(produto, incentivo);
                 

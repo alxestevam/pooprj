@@ -5,6 +5,7 @@
  */
 package managedbean;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -20,7 +21,7 @@ import service.ClienteService;
  */
 @ManagedBean
 @SessionScoped
-public class ClienteMB {
+public class ClienteMB implements Serializable {
     private Cliente cliente = new Cliente();
     private final ClienteService service = new ClienteService();
     private Cliente selectedCliente;

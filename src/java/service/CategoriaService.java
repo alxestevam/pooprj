@@ -28,8 +28,6 @@ public class CategoriaService {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
     
-    
-
     public void addCategoria(Categoria categoria) {
         boolean add = true;
         if(!categoria.getDescricao().equals("")) {
@@ -59,9 +57,10 @@ public class CategoriaService {
     }
 
     public List<Categoria> getCategorias() {
-        EntityManager em = emf.createEntityManager();
+        /*EntityManager em = emf.createEntityManager();
         List<Categoria> c = em.createQuery("select c from Categoria c").getResultList();
-        return c;
+        em.close();*/
+        return null;
     }
 
     public Categoria getCategoriaByDescricao(String value) {

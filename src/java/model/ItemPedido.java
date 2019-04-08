@@ -5,11 +5,13 @@
  */
 package model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
@@ -17,7 +19,7 @@ import javax.persistence.ManyToOne;
  * @author 141812
  */
 @Entity
-public class ItemPedido {
+public class ItemPedido implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name="ITEMPEDIDO_ID")
@@ -25,11 +27,11 @@ public class ItemPedido {
     private int quantidade;
     
     @ManyToOne
+    @JoinColumn(name = "PRODUTO_ID")
     private Produto produto;
 
     public ItemPedido() {
     }
-    
     
     
     public ItemPedido(int numero, int quantidade, Produto produto) {

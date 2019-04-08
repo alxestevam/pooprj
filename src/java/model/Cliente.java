@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import service.Dados;
 
 /**
  *
@@ -34,7 +33,7 @@ public class Cliente implements Serializable{
     private int status;
     private double limite;
     
-    @OneToMany
+    @OneToMany(mappedBy="cliente")
     private ArrayList<Pedido> pedidos = new ArrayList<>();
     
     public Cliente() {

@@ -10,10 +10,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import sun.reflect.CallerSensitive;
 
 /**
  *
@@ -21,17 +25,28 @@ import javax.persistence.Transient;
  */
 
 @Entity
-public class Pedido implements Serializable{
+public class Pedido implements Serializable {
     
     @Id
     @Column(name="PEDIDO_ID")
     private long numero;
+    
+    @Temporal(TemporalType.DATE)
     private Date data;
     
     @OneToMany
     private ArrayList<ItemPedido> itens = new ArrayList<>();
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLIENTE_ID")
     private Cliente cliente;
+    
     private int numItem = 0;
+
+    public Pedido() {
+    }
+    
+    
     
     public void addItem(int quantidade, Produto produto) {
         numItem++;
