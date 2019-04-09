@@ -7,6 +7,7 @@ package service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,39 +21,28 @@ import model.Pedido;
 public class ClienteService implements Serializable {
 
     private final EntityManagerFactory emf;
-    
-    public ClienteService()
-    {
+
+    public ClienteService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
-    
+
     private final ArrayList<Cliente> clientes = Dados.getClientes();
     private final PedidoService pedidoService = new PedidoService();
 
-    public void addCliente(Cliente cliente) {
-        if(!cliente.getNome().equals("") &&
-           !cliente.getEndereco().equals("") &&
-           !cliente.getTelefone().equals("")) {
-            if(clientes.isEmpty()) {
-                cliente.setCodigo(1);
-            } else {
-                cliente.setCodigo(clientes.get(clientes.size() - 1).getCodigo() + 1);
-            }
-            
-            clientes.add(cliente);
-        }
-    }
-
     public void removeCliente(Cliente cliente) {
-      
-        for(Pedido pedido : cliente.getPedidos()) {
-            pedidoService.removePedido(pedido);
-        }
-        clientes.remove(cliente);
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Cliente c = em.find(Cliente.class, cliente.getCodigo());
+        em.remove(c);
+        em.getTransaction().commit();
+        em.close();
     }
 
-    public ArrayList<Cliente> getClientes() {
-        return clientes;
+    public List<Cliente> getClientes() {
+        EntityManager em = emf.createEntityManager();
+        List<Cliente> c = em.createQuery("select c from Cliente c").getResultList();
+        em.close();
+        return c;
     }
 
     public Cliente getClienteByCodigo(int codigo) {
@@ -64,14 +54,18 @@ public class ClienteService implements Serializable {
         }
         return null;
     }
-    
-    public void salvar(Cliente cliente)
-    {
+
+    public void salvar(Cliente cliente) {
+        if (!cliente.getNome().equals("")
+                && !cliente.getEndereco().equals("")
+                && !cliente.getTelefone().equals("")) {
+
             EntityManager em = emf.createEntityManager();
             em.getTransaction().begin();
-                em.persist(cliente);
+            em.merge(cliente);
             em.getTransaction().commit();
-        em.close();
+            em.close();
+        }
     }
 
 }

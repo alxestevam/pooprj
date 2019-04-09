@@ -19,7 +19,7 @@ import model.Produto;
 import org.primefaces.event.RowEditEvent;
 import service.ClienteService;
 import service.PedidoService;
-import service.ProdutoService;
+import service.ProdutoExportacaoService;
 
 /**
  *
@@ -34,7 +34,7 @@ public class PedidoMB implements Serializable {
     private ItemPedido selectedItem;
     private final ClienteService clienteService = new ClienteService();
     private Produto produto;
-    private final ProdutoService produtoService = new ProdutoService();
+    private final ProdutoExportacaoService produtoService = new ProdutoExportacaoService();
     private int quantidade;
 
     public ItemPedido getSelectedItem() {

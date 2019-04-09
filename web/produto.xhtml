@@ -17,9 +17,9 @@
                 <p:inputText   value="#{produtoMB.produto.nome}"/>
 
                 <p:outputLabel value="Categoria" />
-                <p:selectOneMenu value="#{produtoMB.produto.categoria}" converter="converterCategoria" style="width:100%">
+                <p:selectOneMenu value="#{produtoMB.categoriaId}" style="width:100%">
                     <f:selectItems value="#{produtoMB.categorias}" var="aux"
-                                   itemValue="#{aux}" itemLabel="#{aux.descricao}" />
+                                   itemValue="#{aux.id}" itemLabel="#{aux.descricao}" />
                 </p:selectOneMenu>
 
 
@@ -62,6 +62,8 @@
 
 
                 <p:ajax event="rowEdit" listener="#{produtoMB.onRowEdit}" update=":formProd:msgs" />
+                <p:ajax event="rowSelect" listener="#{produtoMB.onRowSelect}" update=":formProd" />
+                <p:ajax event="rowUnselect" listener="#{produtoMB.onRowUnselect}" update=":formProd" />
 
                 <p:column headerText="Codigo">
                     <p:outputLabel value="#{f.codigo}"/>

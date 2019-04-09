@@ -11,8 +11,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import model.Categoria;
 import model.Cliente;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import service.ClienteService;
 
 /**
@@ -22,9 +25,19 @@ import service.ClienteService;
 @ManagedBean
 @SessionScoped
 public class ClienteMB implements Serializable {
+
     private Cliente cliente = new Cliente();
     private final ClienteService service = new ClienteService();
     private Cliente selectedCliente;
+    private boolean editandoCliente;
+
+    public boolean isEditandoCliente() {
+        return editandoCliente;
+    }
+
+    public void setEditandoCliente(boolean editandoCliente) {
+        this.editandoCliente = editandoCliente;
+    }
 
     public Cliente getCliente() {
         return cliente;
@@ -33,21 +46,22 @@ public class ClienteMB implements Serializable {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
+
     public void addCliente() {
-        service.addCliente(cliente);
+        service.salvar(cliente);
+        selectedCliente = null;
         cliente = new Cliente();
     }
-    
+
     public void removeCliente() {
         service.removeCliente(selectedCliente);
     }
-    
+
     public void removeCliente(Cliente c) {
         service.removeCliente(c);
     }
-    
-    public List<Cliente> getClientes(){
+
+    public List<Cliente> getClientes() {
         return service.getClientes();
     }
 
@@ -58,11 +72,19 @@ public class ClienteMB implements Serializable {
     public void setSelectedCliente(Cliente selectedCliente) {
         this.selectedCliente = selectedCliente;
     }
-    
+
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Cliente Editado " + 
-                ((Cliente) event.getObject()).getCodigo());
+        FacesMessage msg = new FacesMessage("Cliente Editado "
+                + ((Cliente) event.getObject()).getCodigo());
         FacesContext.getCurrentInstance().
                 addMessage(null, msg);
+    }
+
+    public void onRowSelect(SelectEvent event) {
+        cliente = selectedCliente;
+    }
+
+    public void onRowUnselect(UnselectEvent event) {
+        cliente = new Cliente();
     }
 }

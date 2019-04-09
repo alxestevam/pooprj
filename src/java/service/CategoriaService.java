@@ -5,6 +5,7 @@
  */
 package service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -17,7 +18,7 @@ import model.Produto;
  *
  * @author 141812
  */
-public class CategoriaService {
+public class CategoriaService implements Serializable {
 
     private ArrayList<Categoria> categorias = Dados.getCategorias();
     private ArrayList<Produto> produtos = Dados.getProdutos();
@@ -26,21 +27,6 @@ public class CategoriaService {
 
     public CategoriaService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
-    }
-    
-    public void addCategoria(Categoria categoria) {
-        boolean add = true;
-        if(!categoria.getDescricao().equals("")) {
-            for(Categoria c : categorias) {
-                if(c.getDescricao().equals(categoria.getDescricao())) {
-                    add = false;
-                    break;
-                }
-            }
-            if(add) {
-                categorias.add(categoria);
-            }
-        }
     }
 
     public void removeCategoria(Categoria categoria) {
@@ -54,9 +40,9 @@ public class CategoriaService {
         }
         if(remove) {
             EntityManager em = emf.createEntityManager();
-            Categoria c = em.find(Categoria.class, categoria.getId());
             em.getTransaction().begin();
-            em.remove(categoria);
+            Categoria c = em.find(Categoria.class, categoria.getId());
+            em.remove(c);
             em.getTransaction().commit();
             em.close();
         }
@@ -66,6 +52,13 @@ public class CategoriaService {
     public List<Categoria> getCategorias() {
         EntityManager em = emf.createEntityManager();
         List<Categoria> c = em.createQuery("select c from Categoria c").getResultList();
+        em.close();
+        return c;
+    }
+    
+    public Categoria getCategoriaById(int id) {
+        EntityManager em = emf.createEntityManager();
+        Categoria c = em.find(Categoria.class, id);
         em.close();
         return c;
     }
@@ -81,11 +74,22 @@ public class CategoriaService {
     }
     
     public void salvar(Categoria c) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(c);
-        em.getTransaction().commit();
-        em.close();
+        boolean add = true;
+        if(!c.getDescricao().equals("")) {
+            for(Categoria i : categorias) {
+                if(i.getDescricao().equals(c.getDescricao())) {
+                    add = false;
+                    break;
+                }
+            }
+            if(add) {
+                EntityManager em = emf.createEntityManager();
+                em.getTransaction().begin();
+                em.merge(c);
+                em.getTransaction().commit();
+                em.close();
+            }
+        }
     }
 
 

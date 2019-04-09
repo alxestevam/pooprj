@@ -13,6 +13,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import model.Categoria;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import service.CategoriaService;
 
 /**
@@ -37,6 +39,7 @@ public class CategoriaMB implements Serializable {
     public void addCategoria() {
         service.salvar(categoria);
         categoria = new Categoria();
+        selectedCategoria = null;
     }
     
     public void removeCategoria() {
@@ -64,5 +67,13 @@ public class CategoriaMB implements Serializable {
                 ((Categoria) event.getObject()).getDescricao());
         FacesContext.getCurrentInstance().
                 addMessage(null, msg);
+    }
+    
+    public void onRowSelect(SelectEvent event) {
+        categoria = selectedCategoria;
+    }
+ 
+    public void onRowUnselect(UnselectEvent event) {
+        categoria = new Categoria();
     }
 }

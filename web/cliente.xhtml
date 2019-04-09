@@ -23,7 +23,7 @@
                 <p:inputText   value="#{clienteMB.cliente.status}" required="true" requiredMessage="Campo Status é obrigatório"/>
                 <p:outputLabel value="Limite"/>
                 <p:inputText   value="#{clienteMB.cliente.limite}" required="true" requiredMessage="Campo Limite é obrigatório"/>
-                
+
             </p:panelGrid>
             <p:commandButton value="Salvar"
                              action="#{clienteMB.addCliente}" 
@@ -31,68 +31,68 @@
 
             <p:growl id="msgs" showDetail="false"/>
             <h:panelGroup id="groupDataTable">
-            <p:dataTable id="dataTableCliente"
-                         var="f" value="#{clienteMB.clientes}"
-                         rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15"
-                         editable="true"
-                         selection="#{clienteMB.selectedCliente}"
-                         selectionMode="single"
-                         rowKey="#{f.codigo}"
-                         >
+                <p:dataTable id="dataTableCliente"
+                             var="f" value="#{clienteMB.clientes}"
+                             rows="10"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"
+                             editable="true"
+                             selection="#{clienteMB.selectedCliente}"
+                             selectionMode="single"
+                             rowKey="#{f.codigo}"
+                             >
 
 
 
-                <p:ajax event="rowEdit" listener="#{clienteMB.onRowEdit}" update=":formCliente:msgs" />
+                    <p:ajax event="rowEdit" listener="#{clienteMB.onRowEdit}" update=":formCliente:msgs" />
+                    <p:ajax event="rowSelect" listener="#{clienteMB.onRowSelect}" update=":formCliente" />
+                    <p:ajax event="rowUnselect" listener="#{clienteMB.onRowUnselect}" update=":formCliente" />
 
-                <p:column headerText="Codigo">
-                    <p:outputLabel value="#{f.codigo}"/>
-                </p:column>
-                <p:column headerText="Nome" filterBy="#{f.nome}" 
-                          filterMatchMode="contains" >
-                    <p:outputLabel value="#{f.nome}"/>
-                </p:column>
-                <p:column headerText="Endereco">
-                    <p:cellEditor>
-                        <f:facet name="output"><p:outputLabel value="#{f.endereco}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{f.endereco}" style="width:100%" label="Endereço"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                <p:column headerText="Telefone">
-                    <p:cellEditor>
-                        <f:facet name="output"><p:outputLabel value="#{f.telefone}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{f.telefone}" style="width:100%" label="Telefone"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column headerText="Codigo">
+                        <p:outputLabel value="#{f.codigo}"/>
+                    </p:column>
+                    <p:column headerText="Nome" filterBy="#{f.nome}" 
+                              filterMatchMode="contains" >
+                        <p:outputLabel value="#{f.nome}"/>
+                    </p:column>
+                    <p:column headerText="Endereco">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel value="#{f.endereco}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{f.endereco}" style="width:100%" label="Endereço"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Telefone">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel value="#{f.telefone}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{f.telefone}" style="width:100%" label="Telefone"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                <p:column headerText="Status" >
-                    <p:cellEditor>
-                        <f:facet name="output"><p:outputLabel value="#{f.status}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{f.status}" style="width:100%" label="Status"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                
-                <p:column headerText="Limite" >
-                    <p:cellEditor>
-                        <f:facet name="output"><p:outputLabel value="#{f.limite}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{f.limite}" style="width:100%" label="Limite"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column headerText="Status" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel value="#{f.status}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{f.status}" style="width:100%" label="Status"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                <p:column style="width:32px">
-                    <p:rowEditor />
-                </p:column>
-                <p:column style="width:32px">
-                    <p:commandLink styleClass="ui-icon ui-icon-trash" 
-                                   actionListener="#{clienteMB.removeCliente(f)}"
-                                   immediate="true"
-                                   update="dataTableCliente"
-                                   />
-                </p:column>
+                    <p:column headerText="Limite" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel value="#{f.limite}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{f.limite}" style="width:100%" label="Limite"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-            </p:dataTable>
+
+                    <p:column style="width:32px">
+                        <p:commandLink styleClass="ui-icon ui-icon-trash" 
+                                       actionListener="#{clienteMB.removeCliente(f)}"
+                                       immediate="true"
+                                       update="dataTableCliente"
+                                       />
+                    </p:column>
+
+                </p:dataTable>
             </h:panelGroup>
 
             <p:contextMenu for="dataTableCliente">

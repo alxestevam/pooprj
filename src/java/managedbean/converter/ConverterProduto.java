@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import model.Produto;
-import service.ProdutoService;
+import service.ProdutoExportacaoService;
 
 
 
@@ -19,7 +19,7 @@ import service.ProdutoService;
 @FacesConverter("converterProduto")
 public class ConverterProduto implements Converter {
 
-	private ProdutoService servico = new ProdutoService();
+	private ProdutoExportacaoService servico = new ProdutoExportacaoService();
 	
 	@Override
 	public Object getAsObject(FacesContext fc, UIComponent uic, String value) {

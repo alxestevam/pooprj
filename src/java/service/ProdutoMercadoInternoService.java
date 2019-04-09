@@ -6,6 +6,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -17,31 +18,20 @@ import model.Produto;
  *
  * @author 141812
  */
-public class ProdutoService {
+public class ProdutoMercadoInternoService {
 
-    private ArrayList<Produto> produtos = Dados.getProdutos();
-    private final ArrayList<Cliente> clientes = Dados.getClientes();
+
     private EntityManagerFactory emf;
+    private ClienteService clienteService = new ClienteService();
 
-    public ProdutoService() {
+    public ProdutoMercadoInternoService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
-    }
-    
-    
-
-    public void addProduto(Produto produto) {
-        if(produtos.isEmpty()) {
-                produto.setCodigo(1);
-        } else {
-                produto.setCodigo(produtos.get(produtos.size() - 1).getCodigo() + 1);
-        }
-        produtos.add(produto);
     }
 
     public void removeProduto(Produto produto) {
         boolean remove = true;
         
-        for(Cliente cliente : clientes) {
+        for(Cliente cliente : clienteService.getClientes()) {
             for(Pedido pedido : cliente.getPedidos()) {
                 if(pedido.contemProduto(produto)) {
                     remove = false;
@@ -50,16 +40,25 @@ public class ProdutoService {
             }
             if(!remove) break;
         }
-        if(remove)
-            produtos.remove(produto);
+        if(remove) {
+            EntityManager em = emf.createEntityManager();
+            em.getTransaction().begin();
+            Produto c = em.find(Produto.class, produto.getCodigo());
+            em.remove(c);
+            em.getTransaction().commit();
+            em.close();
+        }
     }
 
-    public ArrayList<Produto> getProdutos() {
-        return produtos;
+    public List<Produto> getProdutos() {
+        EntityManager em = emf.createEntityManager();
+        List<Produto> c = em.createQuery("select c from Produto c").getResultList();
+        em.close();
+        return c;
     }
 
     public Produto getProdutoByNome(String value) {
-        for (Produto c : produtos) {
+        for (Produto c : getProdutos()) {
             if (c.getNome().equals(value)) {
                 return c;
             }

@@ -19,6 +19,8 @@
             <p:commandButton value="Salvar"
                              action="#{categoriaMB.addCategoria}" 
                              update=":formCategoria" />
+            
+             
 
             <p:growl id="msgs" showDetail="true"/>
             <p:dataTable id="dataTableCategoria"
@@ -32,10 +34,14 @@
                          selectionMode="single"
                          rowKey="#{c.descricao}"
                          >
+                
+               
 
 
 
                 <p:ajax event="rowEdit" listener="#{categoriaMB.onRowEdit}" update=":formCategoria:msgs" />
+                <p:ajax event="rowSelect" listener="#{categoriaMB.onRowSelect}" update=":formCategoria" />
+                <p:ajax event="rowUnselect" listener="#{categoriaMB.onRowUnselect}" update=":formCategoria" />
                 <p:column headerText="Categoria">
                     <p:outputLabel value="#{c.descricao}" />
                 </p:column>

@@ -16,33 +16,44 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 /**
  *
  * @author 141812
  */
-
 @Entity
-public class Cliente implements Serializable{
-    
+public class Cliente implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    @Column(name="CLIENTE_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "CLIENTE_ID")
     private int codigo;
     private String nome;
     private String endereco;
     private String telefone;
     private int status;
     private double limite;
-    
-    @OneToMany(mappedBy="cliente", cascade = CascadeType.ALL)
+
+    @Version
+    private Integer version;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Pedido> pedidos = new ArrayList<>();
-    
+
     public Cliente() {
-         
+
     }
 
-    public Cliente(int codigo, String nome, String endereco, String telefone, int status, double limite) {        
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Cliente(int codigo, String nome, String endereco, String telefone, int status, double limite) {
         this.codigo = codigo;
         this.nome = nome;
         this.endereco = endereco;
@@ -54,7 +65,7 @@ public class Cliente implements Serializable{
     public void addPedido(Pedido pedido) {
         pedidos.add(pedido);
     }
-    
+
     public void removePedido(Pedido pedido) {
         pedidos.remove(pedido);
     }
@@ -114,6 +125,5 @@ public class Cliente implements Serializable{
     public void setPedidos(ArrayList<Pedido> pedidos) {
         this.pedidos = pedidos;
     }
-    
-    
+
 }
