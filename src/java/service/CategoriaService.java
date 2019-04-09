@@ -52,15 +52,22 @@ public class CategoriaService {
                 break;
             }
         }
-        if(remove)
-            categorias.remove(categoria);
+        if(remove) {
+            EntityManager em = emf.createEntityManager();
+            Categoria c = em.find(Categoria.class, categoria.getId());
+            em.getTransaction().begin();
+            em.remove(categoria);
+            em.getTransaction().commit();
+            em.close();
+        }
+            
     }
 
     public List<Categoria> getCategorias() {
-        /*EntityManager em = emf.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         List<Categoria> c = em.createQuery("select c from Categoria c").getResultList();
-        em.close();*/
-        return null;
+        em.close();
+        return c;
     }
 
     public Categoria getCategoriaByDescricao(String value) {
@@ -76,7 +83,7 @@ public class CategoriaService {
     public void salvar(Categoria c) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(c);
+        em.merge(c);
         em.getTransaction().commit();
         em.close();
     }

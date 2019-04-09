@@ -7,6 +7,8 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,8 +35,8 @@ public class Cliente implements Serializable{
     private int status;
     private double limite;
     
-    @OneToMany(mappedBy="cliente")
-    private ArrayList<Pedido> pedidos = new ArrayList<>();
+    @OneToMany(mappedBy="cliente", cascade = CascadeType.ALL)
+    private List<Pedido> pedidos = new ArrayList<>();
     
     public Cliente() {
          
@@ -105,7 +107,7 @@ public class Cliente implements Serializable{
         this.limite = limite;
     }
 
-    public ArrayList<Pedido> getPedidos() {
+    public List<Pedido> getPedidos() {
         return pedidos;
     }
 

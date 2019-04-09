@@ -9,9 +9,9 @@
     <class>model.Produto</class>
     <class>model.ProdutoExportacao</class>
     <class>model.ProdutoMercadoInterno</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/BDapp"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/bdapp"/>
       <property name="javax.persistence.jdbc.user" value="app"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.password" value="app"/>

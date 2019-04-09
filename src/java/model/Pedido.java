@@ -8,6 +8,8 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import sun.reflect.CallerSensitive;
 
 /**
  *
@@ -34,11 +35,12 @@ public class Pedido implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date data;
     
-    @OneToMany
-    private ArrayList<ItemPedido> itens = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PEDIDO_ID")
+    private List<ItemPedido> itens = new ArrayList<>();
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLIENTE_ID")
+    @JoinColumn(name = "CLIENTE_ID" ,referencedColumnName = "CLIENTE_ID")
     private Cliente cliente;
     
     private int numItem = 0;
@@ -56,10 +58,9 @@ public class Pedido implements Serializable {
     
     public ArrayList<ItemPedido> getListItens() {
         ArrayList<ItemPedido> list = new ArrayList<>();
-        itens.forEach((item) -> {
+        for(ItemPedido item : itens) {
             list.add(new ItemPedido(item.getNumero(), item.getQuantidade(), item.getProduto()));
-        });
-        
+        }        
         return list;
     }
     
