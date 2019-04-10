@@ -16,10 +16,13 @@ import model.Cliente;
 import model.ItemPedido;
 import model.Pedido;
 import model.Produto;
+import model.ProdutoExportacao;
+import model.ProdutoMercadoInterno;
 import org.primefaces.event.RowEditEvent;
 import service.ClienteService;
 import service.PedidoService;
 import service.ProdutoExportacaoService;
+import service.ProdutoMercadoInternoService;
 
 /**
  *
@@ -34,7 +37,9 @@ public class PedidoMB implements Serializable {
     private ItemPedido selectedItem;
     private final ClienteService clienteService = new ClienteService();
     private Produto produto;
-    private final ProdutoExportacaoService produtoService = new ProdutoExportacaoService();
+    private final ProdutoMercadoInternoService produtoMIService = new ProdutoMercadoInternoService();
+    private final ProdutoExportacaoService produtoExpService = new ProdutoExportacaoService();
+    
     private int quantidade;
 
     public ItemPedido getSelectedItem() {
@@ -45,8 +50,12 @@ public class PedidoMB implements Serializable {
         this.selectedItem = selectedItem;
     }
     
-    public List<Produto> getProdutos() {
-        return produtoService.getProdutos();
+    public List<ProdutoExportacao> getProdutosExportacao() {
+        return produtoExpService.getProdutosExportacao();
+    }
+    
+    public List<ProdutoMercadoInterno> getProdutosMercadoInterno() {
+        return produtoMIService.getProdutosMercadoInterno();
     }
 
     public Produto getProduto() {
@@ -76,7 +85,7 @@ public class PedidoMB implements Serializable {
     public void addPedido() {
         Calendar c = Calendar.getInstance();
         pedido.setData(c.getTime());
-        service.addPedido(pedido);
+        service.salvar(pedido);
         pedido.getCliente().addPedido(pedido);
         pedido = new Pedido();
     }

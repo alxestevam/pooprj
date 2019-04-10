@@ -5,7 +5,7 @@
  */
 package service;
 
-import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -18,51 +18,60 @@ import model.Produto;
  */
 public class PedidoService {
 
-    private final ArrayList<Pedido> pedidos = Dados.getPedidos();
-    
     private final EntityManagerFactory emf;
-    
-    public PedidoService()
-    {
+
+    public PedidoService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
-    
-    public void addPedido(Pedido pedido) {
-    	if(pedido.getCliente() != null) {
-            if(pedidos.isEmpty()) {
-                pedido.setNumero(1);
-            }else {
-                pedido.setNumero(pedidos.get(pedidos.size() - 1).getNumero() + 1);
-            }
-            pedidos.add(pedido);
-        }   
-    }
 
-    public void removePedido(Pedido pedido) {
-        pedidos.remove(pedido);
-    }
-
-    public ArrayList<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public Pedido getPedidoByNumero(int numero) {
-        for (Pedido c : pedidos) {
-            if (c.getNumero() == numero) {
-                return c;
-            }
-
-        }
-        return null;
-    }
-
-    public void salvar(Pedido pedido)
-    {
-            EntityManager em = emf.createEntityManager();
+    // <editor-fold defaultstate="collapsed" desc="Insert">
+    public void salvar(Pedido pedido) {
+        EntityManager em = emf.createEntityManager();
+        try {
             em.getTransaction().begin();
-                em.persist(pedido);
+            em.merge(pedido);
             em.getTransaction().commit();
-        em.close();
+        } catch (Exception e) {
+            System.out.println("Não foi possivel salvar");
+        } finally {
+            em.close();
+        }
     }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Remove">
+    public void removePedido(Pedido pedido) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            Produto c = em.find(Produto.class, pedido.getNumero());
+            em.remove(c);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Não foi possível excluir");
+        } finally {
+            em.close();
+        }
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Read All">
+    public List<Pedido> getPedidos() {
+        EntityManager em = emf.createEntityManager();
+        List<Pedido> c = em.createQuery("select c from Pedido c").getResultList();
+        em.close();
+        return c;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Find By Id">
+    public Pedido getPedidoByNumero(int numero) {
+        EntityManager em = emf.createEntityManager();
+        Pedido c = em.find(Pedido.class, numero);
+        em.close();
+        return c;
+    }
+    // </editor-fold>
 
 }

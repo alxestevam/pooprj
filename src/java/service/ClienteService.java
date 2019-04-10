@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import model.Categoria;
 import model.Cliente;
 import model.Pedido;
 
@@ -31,11 +32,19 @@ public class ClienteService implements Serializable {
 
     public void removeCliente(Cliente cliente) {
         EntityManager em = emf.createEntityManager();
+        
+        try {        
         em.getTransaction().begin();
         Cliente c = em.find(Cliente.class, cliente.getCodigo());
         em.remove(c);
         em.getTransaction().commit();
-        em.close();
+        }
+        catch (Exception e) {
+            System.out.println("Não foi possivel remover");
+        }
+        finally {
+            em.close();
+        }
     }
 
     public List<Cliente> getClientes() {
@@ -46,13 +55,10 @@ public class ClienteService implements Serializable {
     }
 
     public Cliente getClienteByCodigo(int codigo) {
-        for (Cliente c : clientes) {
-            if (c.getCodigo() == codigo) {
-                return c;
-            }
-
-        }
-        return null;
+        EntityManager em = emf.createEntityManager();
+        Cliente c = em.find(Cliente.class, codigo);
+        em.close();
+        return c;
     }
 
     public void salvar(Cliente cliente) {

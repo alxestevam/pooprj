@@ -48,13 +48,13 @@
             
             <h:panelGroup id="groupDataTable">
                 <p:dataTable id="dataTableProdExp"
-                         var="f" value="#{produtoMB.produtos}"
+                             var="f" value="#{produtoMB.produtosExportacao}"
                          rows="10"
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15"
                          editable="true"
-                         selection="#{produtoMB.selectedProduto}"
+                         selection="#{produtoMB.selectedProdutoExp}"
                          selectionMode="single"
                          rowKey="#{f.codigo}"
                          >
@@ -62,8 +62,8 @@
 
 
                 <p:ajax event="rowEdit" listener="#{produtoMB.onRowEdit}" update=":formProd:msgs" />
-                <p:ajax event="rowSelect" listener="#{produtoMB.onRowSelect}" update=":formProd" />
-                <p:ajax event="rowUnselect" listener="#{produtoMB.onRowUnselect}" update=":formProd" />
+                <p:ajax event="rowSelect" listener="#{produtoMB.onRowSelectExp}" update=":formProd" />
+                <p:ajax event="rowUnselect" listener="#{produtoMB.onRowUnselectExp}" update=":formProd" />
 
                 <p:column headerText="Codigo">
                     <p:outputLabel value="#{f.codigo}"/>
@@ -98,33 +98,14 @@
                     </p:cellEditor>
                 </p:column>
                 
-                <p:column headerText="Tipo" filterBy="#{f.tipo}" 
-                          filterMatchMode="equals" >
-                    <f:facet name="filter">
-                    <p:selectOneButton onchange="PF('dataTableProdExp').filter()" styleClass="custom-filter">
-                        <f:converter converterId="javax.faces.Boolean" />
-                        <f:selectItem itemLabel="Todos" itemValue="" />
-                        <f:selectItem itemLabel="Exportação" itemValue="0" />
-                        <f:selectItem itemLabel="Mercado Interno" itemValue="1" />
-                    </p:selectOneButton>
-                    </f:facet>
-                    <p:outputLabel value="#{(f.tipo eq 0) ? 'Exportação' : 'Mercado Interno'}"/>
-                </p:column>
-                
                 <p:column headerText="Destino">
-                    <p:outputLabel rendered="#{f.tipo eq 0}" value="#{f.destino}"/>
+                    <p:outputLabel value="#{f.destino}"/>
                 </p:column>
                 
-                <p:column headerText="Incentivo">
-                    <p:outputLabel rendered="#{f.tipo eq 1}" value="#{f.incentivo ? 'Sim' : 'Não'}"/>
-                </p:column>
-
-                <p:column style="width:32px">
-                    <p:rowEditor />
-                </p:column>
+  
                 <p:column style="width:32px">
                     <p:commandLink styleClass="ui-icon ui-icon-trash" 
-                                   actionListener="#{produtoMB.removeProduto(f)}"
+                                   actionListener="#{produtoMB.removeProdutoExportacao(f)}"
                                    update="dataTableProdExp"
                                    />
                 </p:column>
@@ -132,12 +113,85 @@
             </p:dataTable>
             </h:panelGroup>
             
-
-            <p:contextMenu for="dataTableProdExp" rendered="#{produtoMB.escolhaTipo eq 0}">
+            <p:contextMenu for="dataTableProdExp">
                 <p:menuitem value="Remove" 
                             update="dataTableProdExp" 
                             icon="ui-icon-close" 
-                            actionListener="#{produtoMB.removeProduto}"/>
+                            actionListener="#{produtoMB.removeProdutoExportacao}"/>
+            </p:contextMenu>
+            
+            <h:panelGroup id="groupDataTable">
+                <p:dataTable id="dataTableProdMI"
+                             var="f" value="#{produtoMB.produtosMercadoInterno}"
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15"
+                         editable="true"
+                         selection="#{produtoMB.selectedProdutoMI}"
+                         selectionMode="single"
+                         rowKey="#{f.codigo}"
+                         >
+
+
+
+                <p:ajax event="rowEdit" listener="#{produtoMB.onRowEdit}" update=":formProd:msgs" />
+                <p:ajax event="rowSelect" listener="#{produtoMB.onRowSelectMI}" update=":formProd" />
+                <p:ajax event="rowUnselect" listener="#{produtoMB.onRowUnselectMI}" update=":formProd" />
+
+                <p:column headerText="Codigo">
+                    <p:outputLabel value="#{f.codigo}"/>
+                </p:column>
+                <p:column headerText="Nome" filterBy="#{f.nome}" 
+                          filterMatchMode="contains" >
+                    <p:outputLabel value="#{f.nome}"/>
+                </p:column>
+                <p:column headerText="Preco">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{f.preco}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{f.preco}" style="width:100%" label="Preco"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Imposto">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{f.imposto}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{f.imposto}" style="width:100%" label="Imposto"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Categoria" >
+                    <p:cellEditor>
+                        <f:facet name="output"> <p:outputLabel value="#{f.categoria.descricao}"/></f:facet>
+                        <f:facet name="input" >
+                            <p:selectOneMenu value="#{f.categoria}" converter="converterCategoria" style="width:100%">
+                                <f:selectItems value="#{produtoMB.categorias}" var="aux"
+                                               itemValue="#{aux}" itemLabel="#{aux.descricao}"
+                                               />
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Incentivo">
+                    <p:outputLabel value="#{f.incentivo ? 'Sim' : 'Não'}"/>
+                </p:column>
+
+                <p:column style="width:32px">
+                    <p:commandLink styleClass="ui-icon ui-icon-trash" 
+                                   actionListener="#{produtoMB.removeProdutoMercadoInterno(f)}"
+                                   update="dataTableProdMI"
+                                   />
+                </p:column>
+
+            </p:dataTable>
+            </h:panelGroup>
+            
+
+            <p:contextMenu for="dataTableProdExp"">
+                <p:menuitem value="Remove" 
+                            update="dataTableProdExp" 
+                            icon="ui-icon-close" 
+                            actionListener="#{produtoMB.removeProdutoMercadoInterno}"/>
             </p:contextMenu>
 
 

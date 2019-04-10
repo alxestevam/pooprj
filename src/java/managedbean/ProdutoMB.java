@@ -24,6 +24,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import service.CategoriaService;
 import service.ProdutoExportacaoService;
+import service.ProdutoMercadoInternoService;
 
 /**
  *
@@ -34,8 +35,10 @@ import service.ProdutoExportacaoService;
 public class ProdutoMB implements Serializable {
 
     private Produto produto = new Produto();
-    private ProdutoExportacaoService service = new ProdutoExportacaoService();
-    private Produto selectedProduto;
+    private ProdutoMercadoInternoService serviceMI = new ProdutoMercadoInternoService();
+    private ProdutoExportacaoService serviceExp = new ProdutoExportacaoService();
+    private ProdutoExportacao selectedProdutoExp;
+    private ProdutoMercadoInterno selectedProdutoMI;
     private CategoriaService categoriaService = new CategoriaService();
     private Categoria selectedCategoria;
     List<String> destinos = Arrays.asList("Exportação", "Mercado Interno");
@@ -43,6 +46,22 @@ public class ProdutoMB implements Serializable {
     private boolean incentivo;
     private int escolhaTipo;
     private int categoriaId;
+
+    public ProdutoExportacao getSelectedProdutoExp() {
+        return selectedProdutoExp;
+    }
+
+    public void setSelectedProdutoExp(ProdutoExportacao selectedProdutoExp) {
+        this.selectedProdutoExp = selectedProdutoExp;
+    }
+
+    public ProdutoMercadoInterno getSelectedProdutoMI() {
+        return selectedProdutoMI;
+    }
+
+    public void setSelectedProdutoMI(ProdutoMercadoInterno selectedProdutoMI) {
+        this.selectedProdutoMI = selectedProdutoMI;
+    }
 
     public int getCategoriaId() {
         return categoriaId;
@@ -94,18 +113,18 @@ public class ProdutoMB implements Serializable {
 
     public void addProduto() {
         Categoria cat = categoriaService.getCategoriaById(categoriaId);
-        
+
         if (cat != null) {
             if (getEscolhaTipo() == 0) {
                 ProdutoExportacao produtoExportacao = new ProdutoExportacao();
                 produtoExportacao.espProduto(produto, destino);
 
-                service.salvar(produtoExportacao);
+                serviceExp.salvar(produtoExportacao);
             } else if (getEscolhaTipo() == 1) {
                 ProdutoMercadoInterno produtoMercadoInterno = new ProdutoMercadoInterno();
                 produtoMercadoInterno.espProduto(produto, incentivo);
 
-                service.salvar(produtoMercadoInterno);
+                serviceMI.salvar(produtoMercadoInterno);
             }
 
             produto = new Produto();
@@ -113,20 +132,28 @@ public class ProdutoMB implements Serializable {
 
     }
 
-    public void removeProduto() {
-        service.removeProduto(selectedProduto);
+    public void removeProdutoMercadoInterno() {
+        serviceMI.removeProduto(selectedProdutoMI);
     }
 
-    public void removeProduto(Produto c) {
-        service.removeProduto(c);
+    public void removeProdutoMercadoInterno(ProdutoMercadoInterno p) {
+        serviceMI.removeProduto(p);
     }
 
-    public List<Produto> getProdutos() {
-        return service.getProdutos();
+    public void removeProdutoExportacao() {
+        serviceExp.removeProduto(selectedProdutoExp);
     }
 
-    public Produto getSelectedProduto() {
-        return selectedProduto;
+    public void removeProdutoExportacao(ProdutoExportacao p) {
+        serviceExp.removeProduto(p);
+    }
+
+    public List<ProdutoExportacao> getProdutosExportacao() {
+        return serviceExp.getProdutosExportacao();
+    }
+
+    public List<ProdutoMercadoInterno> getProdutosMercadoInterno() {
+        return serviceMI.getProdutosMercadoInterno();
     }
 
     public Categoria getSelectedCategoria() {
@@ -141,10 +168,6 @@ public class ProdutoMB implements Serializable {
         return categoriaService.getCategorias();
     }
 
-    public void setSelectedProduto(Produto selectedProduto) {
-        this.selectedProduto = selectedProduto;
-    }
-
     public void onRowEdit(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Produto Editado",
                 ((Produto) event.getObject()).getNome());
@@ -152,11 +175,21 @@ public class ProdutoMB implements Serializable {
                 addMessage(null, msg);
     }
 
-    public void onRowSelect(SelectEvent event) {
-        produto = selectedProduto;
+    public void onRowSelectExp(SelectEvent event) {
+        produto = selectedProdutoExp;
+        destino = selectedProdutoExp.getDestino();
     }
 
-    public void onRowUnselect(UnselectEvent event) {
+    public void onRowSelectMI(SelectEvent event) {
+        produto = selectedProdutoMI;
+        incentivo = selectedProdutoMI.isIncentivo();
+    }
+
+    public void onRowUnselectExp(UnselectEvent event) {
+        produto = new Produto();
+    }
+
+    public void onRowUnselectMI(UnselectEvent event) {
         produto = new Produto();
     }
 }

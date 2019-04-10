@@ -13,67 +13,73 @@ import javax.persistence.Persistence;
 import model.Cliente;
 import model.Pedido;
 import model.Produto;
+import model.ProdutoExportacao;
+import model.ProdutoMercadoInterno;
 
 /**
  *
  * @author 141812
  */
 public class ProdutoExportacaoService {
-
-
-    private EntityManagerFactory emf;
-    private ClienteService clienteService = new ClienteService();
+    private final EntityManagerFactory emf;
 
     public ProdutoExportacaoService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
-
-    public void removeProduto(Produto produto) {
-        boolean remove = true;
+    
+    // <editor-fold defaultstate="collapsed" desc="Remove">
+    public void removeProduto(ProdutoExportacao produto) {
+        EntityManager em = emf.createEntityManager();
         
-        for(Cliente cliente : clienteService.getClientes()) {
-            for(Pedido pedido : cliente.getPedidos()) {
-                if(pedido.contemProduto(produto)) {
-                    remove = false;
-                    break;
-                }
-            }
-            if(!remove) break;
-        }
-        if(remove) {
-            EntityManager em = emf.createEntityManager();
+        try {
             em.getTransaction().begin();
             Produto c = em.find(Produto.class, produto.getCodigo());
             em.remove(c);
             em.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.out.println("Não foi possível excluir");
+        }
+        finally {
             em.close();
         }
     }
+    // </editor-fold>
 
-    public List<Produto> getProdutos() {
+    // <editor-fold defaultstate="collapsed" desc="Read All">
+    public List<ProdutoExportacao> getProdutosExportacao() {
         EntityManager em = emf.createEntityManager();
-        List<Produto> c = em.createQuery("select c from Produto c").getResultList();
+        List<ProdutoExportacao> c = em.createQuery("select c from ProdutoExportacao c").getResultList();
         em.close();
         return c;
     }
-
-    public Produto getProdutoByNome(String value) {
-        for (Produto c : getProdutos()) {
-            if (c.getNome().equals(value)) {
-                return c;
-            }
-
-        }
-        return null;
-    }
+    // </editor-fold>
     
-    public void salvar(Produto produto) {
+    // <editor-fold defaultstate="collapsed" desc="Find By Id">
+    public ProdutoExportacao getProdutoByCodigo(int codigo) {
         EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(produto);
-        em.getTransaction().commit();
+        ProdutoExportacao c = em.find(ProdutoExportacao.class, codigo);
         em.close();
+        return c;
     }
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Insert">
+    public void salvar(ProdutoExportacao produto) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(produto);
+            em.getTransaction().commit();
+        }
+        catch(Exception e) {
+            System.out.println("Não foi possivel salvar");
+        }
+        finally {
+            em.close();
+        }
+    }
+    // </editor-fold>
 
 
 }
