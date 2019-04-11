@@ -24,86 +24,84 @@ import javax.persistence.TemporalType;
  *
  * @author 141812
  */
-
 @Entity
 public class Pedido implements Serializable {
-    
+
     @Id
-    @Column(name="PEDIDO_ID")
+    @Column(name = "PEDIDO_ID")
     private long numero;
-    
+
     @Temporal(TemporalType.DATE)
-    private Date data;
-    
+    @Column(name = "DATA")
+    private Date dataPedido;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "PEDIDO_ID")
-    private List<ItemPedido> itens = new ArrayList<>();
-    
+    private final List<ItemPedido> itens = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLIENTE_ID" ,referencedColumnName = "CLIENTE_ID")
+    @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "CLIENTE_ID")
     private Cliente cliente;
-    
+
     private int numItem = 0;
 
     public Pedido() {
     }
-    
-    
-    
+
     public void addItem(int quantidade, Produto produto) {
         numItem++;
         ItemPedido itemPedido = new ItemPedido(numItem, quantidade, produto);
         itens.add(itemPedido);
     }
-    
+
     public ArrayList<ItemPedido> getListItens() {
         ArrayList<ItemPedido> list = new ArrayList<>();
-        for(ItemPedido item : itens) {
+        for (ItemPedido item : itens) {
             list.add(new ItemPedido(item.getNumero(), item.getQuantidade(), item.getProduto()));
-        }        
+        }
         return list;
     }
-    
+
     public boolean contemProduto(Produto produto) {
-        for(ItemPedido item : itens) {
-            if(item.getProduto().equals(produto)) {
+        for (ItemPedido item : itens) {
+            if (item.getProduto().equals(produto)) {
                 return true;
             }
         }
         return false;
     }
-    
+
     public void removeItem(int numero) {
-        for(ItemPedido item : itens) {
-            if(item.getNumero() == numero) {
+        for (ItemPedido item : itens) {
+            if (item.getNumero() == numero) {
                 itens.remove(item);
                 break;
             }
         }
     }
-    
+
     public void editItem(int numero, int quantidade) {
         for (ItemPedido item : itens) {
-            if(item.getNumero() == numero) {
+            if (item.getNumero() == numero) {
                 item.setQuantidade(quantidade);
                 break;
             }
         }
     }
-    
+
     public double totalPedido() {
         double total = 0;
-        for(ItemPedido itemPedido : itens) {
+        for (ItemPedido itemPedido : itens) {
             total += itemPedido.totalItem();
         }
         return total;
     }
-    
+
     public double totalImposto() {
         double total = 0;
-        for(ItemPedido itemPedido : itens) {
-            total += itemPedido.getQuantidade() * 
-                    itemPedido.getProduto().getImposto();
+        for (ItemPedido itemPedido : itens) {
+            total += itemPedido.getQuantidade()
+                    * itemPedido.getProduto().getImposto();
         }
         return total;
     }
@@ -117,13 +115,13 @@ public class Pedido implements Serializable {
     }
 
     public Date getData() {
-        return data;
+        return dataPedido;
     }
 
     public void setData(Date data) {
-        this.data = data;
+        this.dataPedido = data;
     }
-    
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -131,6 +129,5 @@ public class Pedido implements Serializable {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
-    
+
 }

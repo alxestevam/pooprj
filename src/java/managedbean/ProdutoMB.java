@@ -6,16 +6,13 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import model.Categoria;
-import model.Cliente;
 import model.Produto;
 import model.ProdutoExportacao;
 import model.ProdutoMercadoInterno;

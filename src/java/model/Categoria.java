@@ -18,14 +18,15 @@ import javax.persistence.Id;
  */
 @Entity
 public class Categoria implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=SEQUENCE)
-    @Column(name="CATEGORIA_ID")
+    @GeneratedValue(strategy = SEQUENCE)
+    @Column(name = "CATEGORIA_ID")
     private int id;
     private String descricao;
-    
+
     public Categoria() {
-        
+
     }
 
     public int getId() {
@@ -35,7 +36,7 @@ public class Categoria implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public Categoria(String descricao) {
         this.descricao = descricao;
     }
@@ -52,6 +53,5 @@ public class Categoria implements Serializable {
     public String toString() {
         return "Categoria{" + "descricao=" + descricao + '}';
     }
-    
-    
+
 }

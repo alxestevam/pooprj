@@ -6,7 +6,6 @@
 package model;
 
 import java.io.Serializable;
-import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -22,28 +21,26 @@ import javax.persistence.ManyToOne;
  *
  * @author 141812
  */
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TIPO")
-public class Produto implements Serializable{
-    
+public class Produto implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column (name="PRODUTO_ID")
+    @Column(name = "PRODUTO_ID")
     private int codigo;
     private String nome;
-    
+
     @ManyToOne
-    @JoinColumn(name="CATEGORIA_ID")
+    @JoinColumn(name = "CATEGORIA_ID")
     private Categoria categoria;
     private double preco;
     private int moeda;
     private double imposto;
-    //private int tipo;
-    
-    public Produto () {
-        
+
+    public Produto() {
+
     }
 
     public Produto(int codigo, String nome, Categoria categoria, double preco, int moeda, double imposto) {
@@ -55,8 +52,6 @@ public class Produto implements Serializable{
         this.imposto = imposto;
     }
 
-    
-    
     public void copiaProduto(Produto p) {
         this.codigo = p.getCodigo();
         this.nome = p.getNome();
@@ -64,18 +59,7 @@ public class Produto implements Serializable{
         this.preco = p.getPreco();
         this.moeda = p.getMoeda();
         this.imposto = p.getImposto();
-        //this.tipo = p.getTipo();
     }
-    
-    
-
-    /*public int getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    } */  
 
     public int getCodigo() {
         return codigo;
@@ -124,6 +108,5 @@ public class Produto implements Serializable{
     public void setImposto(double imposto) {
         this.imposto = imposto;
     }
-    
-    
+
 }

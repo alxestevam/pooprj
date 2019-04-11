@@ -6,13 +6,11 @@
 package service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import model.Categoria;
-import model.Produto;
 
 /**
  *
@@ -26,6 +24,7 @@ public class CategoriaService implements Serializable {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
 
+    // <editor-fold defaultstate="collapsed" desc="Remove">
     public void removeCategoria(Categoria categoria) {
         EntityManager em = emf.createEntityManager();
 
@@ -40,34 +39,39 @@ public class CategoriaService implements Serializable {
             em.close();
         }
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Read All">
     public List<Categoria> getCategorias() {
         EntityManager em = emf.createEntityManager();
         List<Categoria> c = em.createQuery("select c from Categoria c").getResultList();
         em.close();
         return c;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Find By Id">
     public Categoria getCategoriaById(int id) {
         EntityManager em = emf.createEntityManager();
         Categoria c = em.find(Categoria.class, id);
         em.close();
         return c;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Inserir">
     public void salvar(Categoria c) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
             em.merge(c);
             em.getTransaction().commit();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Não foi possivel salvar");
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
+    // </editor-fold>
 
 }

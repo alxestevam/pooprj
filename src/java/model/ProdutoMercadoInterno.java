@@ -5,11 +5,7 @@
  */
 package model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
@@ -17,6 +13,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class ProdutoMercadoInterno extends Produto {
+
     private boolean incentivo;
 
     public ProdutoMercadoInterno() {
@@ -27,7 +24,7 @@ public class ProdutoMercadoInterno extends Produto {
         //this.setTipo(1);
         this.incentivo = incentivo;
     }
-    
+
     public void espProduto(Produto p, boolean incentivo) {
         copiaProduto(p);
         this.incentivo = incentivo;
@@ -39,5 +36,5 @@ public class ProdutoMercadoInterno extends Produto {
 
     public void setIncentivo(boolean incentivo) {
         this.incentivo = incentivo;
-    }    
+    }
 }

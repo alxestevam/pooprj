@@ -34,6 +34,7 @@ import service.ProdutoMercadoInternoService;
 @ManagedBean
 @SessionScoped
 public class PedidoMB implements Serializable {
+
     private Pedido pedido = new Pedido();
     private final PedidoService service = new PedidoService();
     private Pedido selectedPedido;
@@ -54,8 +55,6 @@ public class PedidoMB implements Serializable {
         this.produtoId = produtoId;
     }
 
-    
-    
     public int getClienteId() {
         return clienteId;
     }
@@ -71,20 +70,22 @@ public class PedidoMB implements Serializable {
     public void setSelectedItem(ItemPedido selectedItem) {
         this.selectedItem = selectedItem;
     }
-    
+
     public List<Produto> getProdutos() {
         List<Produto> produtos = new ArrayList<>();
-        for(Produto p : getProdutosExportacao())
+        for (Produto p : getProdutosExportacao()) {
             produtos.add(p);
-        for(Produto p : getProdutosMercadoInterno())
+        }
+        for (Produto p : getProdutosMercadoInterno()) {
             produtos.add(p);
+        }
         return produtos;
     }
-    
+
     public List<ProdutoExportacao> getProdutosExportacao() {
         return produtoExpService.getProdutosExportacao();
     }
-    
+
     public List<ProdutoMercadoInterno> getProdutosMercadoInterno() {
         return produtoMIService.getProdutosMercadoInterno();
     }
@@ -104,7 +105,7 @@ public class PedidoMB implements Serializable {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
-    
+
     public Pedido getPedido() {
         return pedido;
     }
@@ -112,7 +113,7 @@ public class PedidoMB implements Serializable {
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
-    
+
     public void addPedido() {
         Cliente cli = clienteService.getClienteByCodigo(clienteId);
         pedido.setCliente(cli);
@@ -123,40 +124,42 @@ public class PedidoMB implements Serializable {
         clienteService.salvar(pedido.getCliente());
         pedido = new Pedido();
     }
-    
+
     public void addItemPedido() {
         ProdutoExportacao pE = produtoExpService.getProdutoByCodigo(produtoId);
         ProdutoMercadoInterno pMI = produtoMIService.getProdutoByCodigo(produtoId);
         Produto p = null;
-        
-        if(pE == null)
+
+        if (pE == null) {
             p = pMI;
-        else
+        } else {
             p = pE;
-        
-        if(quantidade != 0)
+        }
+
+        if (quantidade != 0) {
             pedido.addItem(quantidade, produto);
+        }
         quantidade = 0;
     }
-    
+
     public void removeItemPedido(Pedido pedido, ItemPedido item) {
         pedido.removeItem(item.getNumero());
         //service.salvar(pedido);
     }
-    
+
     public void removePedido() {
         service.removePedido(selectedPedido);
     }
-    
+
     public void removePedido(Pedido c) {
         service.removePedido(c);
     }
-    
-    public List<Pedido> getPedidos(){
+
+    public List<Pedido> getPedidos() {
         return service.getPedidos();
     }
-    
-    public List<Cliente> getClientes(){
+
+    public List<Cliente> getClientes() {
         return clienteService.getClientes();
     }
 
@@ -166,19 +169,19 @@ public class PedidoMB implements Serializable {
 
     public void setSelectedPedido(Pedido selectedPedido) {
         this.selectedPedido = selectedPedido;
-    }    
-    
+    }
+
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Pedido Editado nº" +
-                ((Pedido) event.getObject()).getNumero());
+        FacesMessage msg = new FacesMessage("Pedido Editado nº"
+                + ((Pedido) event.getObject()).getNumero());
         FacesContext.getCurrentInstance().
                 addMessage(null, msg);
     }
-    
+
     public void onRowSelect(SelectEvent event) {
         pedido = selectedPedido;
     }
-    
+
     public void onRowUnselect(UnselectEvent event) {
         pedido = new Pedido();
     }

@@ -24,6 +24,7 @@ import service.CategoriaService;
 @ManagedBean
 @SessionScoped
 public class CategoriaMB implements Serializable {
+
     private Categoria categoria = new Categoria();
     private CategoriaService service = new CategoriaService();
     private Categoria selectedCategoria;
@@ -35,22 +36,22 @@ public class CategoriaMB implements Serializable {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-    
+
     public void addCategoria() {
         service.salvar(categoria);
         categoria = new Categoria();
         selectedCategoria = null;
     }
-    
+
     public void removeCategoria() {
         service.removeCategoria(selectedCategoria);
     }
-    
+
     public void removeCategoria(Categoria c) {
         service.removeCategoria(c);
     }
-    
-    public List<Categoria> getCategorias(){
+
+    public List<Categoria> getCategorias() {
         return service.getCategorias();
     }
 
@@ -61,18 +62,18 @@ public class CategoriaMB implements Serializable {
     public void setSelectedCategoria(Categoria selectedCategoria) {
         this.selectedCategoria = selectedCategoria;
     }
-    
+
     public void onRowEdit(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Categoria Editada",
                 ((Categoria) event.getObject()).getDescricao());
         FacesContext.getCurrentInstance().
                 addMessage(null, msg);
     }
-    
+
     public void onRowSelect(SelectEvent event) {
         categoria = selectedCategoria;
     }
- 
+
     public void onRowUnselect(UnselectEvent event) {
         categoria = new Categoria();
     }

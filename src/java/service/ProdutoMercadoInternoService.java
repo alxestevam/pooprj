@@ -5,15 +5,11 @@
  */
 package service;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import model.Cliente;
-import model.Pedido;
 import model.Produto;
-import model.ProdutoExportacao;
 import model.ProdutoMercadoInterno;
 
 /**
@@ -21,26 +17,25 @@ import model.ProdutoMercadoInterno;
  * @author 141812
  */
 public class ProdutoMercadoInternoService {
+
     private final EntityManagerFactory emf;
 
     public ProdutoMercadoInternoService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="Remove">
     public void removeProduto(ProdutoMercadoInterno produto) {
         EntityManager em = emf.createEntityManager();
-        
+
         try {
             em.getTransaction().begin();
             Produto c = em.find(Produto.class, produto.getCodigo());
             em.remove(c);
             em.getTransaction().commit();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Não foi possível excluir");
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
@@ -54,7 +49,7 @@ public class ProdutoMercadoInternoService {
         return c;
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Find By Id">
     public ProdutoMercadoInterno getProdutoByCodigo(int codigo) {
         EntityManager em = emf.createEntityManager();
@@ -63,7 +58,7 @@ public class ProdutoMercadoInternoService {
         return c;
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Insert">
     public void salvar(ProdutoMercadoInterno produto) {
         EntityManager em = emf.createEntityManager();
@@ -71,15 +66,12 @@ public class ProdutoMercadoInternoService {
             em.getTransaction().begin();
             em.merge(produto);
             em.getTransaction().commit();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Não foi possivel salvar");
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
     // </editor-fold>
-
 
 }

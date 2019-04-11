@@ -6,14 +6,11 @@
 package service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import model.Categoria;
 import model.Cliente;
-import model.Pedido;
 
 /**
  *
@@ -29,37 +26,42 @@ public class ClienteService implements Serializable {
 
     private final PedidoService pedidoService = new PedidoService();
 
+    // <editor-fold defaultstate="collapsed" desc="Remove">
     public void removeCliente(Cliente cliente) {
         EntityManager em = emf.createEntityManager();
-        
-        try {        
-        em.getTransaction().begin();
-        Cliente c = em.find(Cliente.class, cliente.getCodigo());
-        em.remove(c);
-        em.getTransaction().commit();
-        }
-        catch (Exception e) {
+
+        try {
+            em.getTransaction().begin();
+            Cliente c = em.find(Cliente.class, cliente.getCodigo());
+            em.remove(c);
+            em.getTransaction().commit();
+        } catch (Exception e) {
             System.out.println("Não foi possivel remover");
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Read All">
     public List<Cliente> getClientes() {
         EntityManager em = emf.createEntityManager();
         List<Cliente> c = em.createQuery("select c from Cliente c").getResultList();
         em.close();
         return c;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Find By Id">
     public Cliente getClienteByCodigo(int codigo) {
         EntityManager em = emf.createEntityManager();
         Cliente c = em.find(Cliente.class, codigo);
         em.close();
         return c;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Inserir">
     public void salvar(Cliente cliente) {
         if (!cliente.getNome().equals("")
                 && !cliente.getEndereco().equals("")
@@ -72,5 +74,6 @@ public class ClienteService implements Serializable {
             em.close();
         }
     }
+    // </editor-fold>
 
 }

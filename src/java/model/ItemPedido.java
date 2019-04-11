@@ -20,26 +20,26 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class ItemPedido implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    @Column(name="ITEMPEDIDO_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ITEMPEDIDO_ID")
     private int numero;
     private int quantidade;
-    
+
     @ManyToOne
     @JoinColumn(name = "PRODUTO_ID")
     private Produto produto;
 
     public ItemPedido() {
     }
-    
-    
+
     public ItemPedido(int numero, int quantidade, Produto produto) {
         this.numero = numero;
         this.quantidade = quantidade;
         this.produto = produto;
     }
-    
+
     public double totalItem() {
         return quantidade * produto.getPreco();
     }
@@ -67,6 +67,5 @@ public class ItemPedido implements Serializable {
     public void setProduto(Produto produto) {
         this.produto = produto;
     }
-    
-    
+
 }
