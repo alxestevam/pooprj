@@ -6,6 +6,7 @@
 package managedbean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -19,6 +20,8 @@ import model.Produto;
 import model.ProdutoExportacao;
 import model.ProdutoMercadoInterno;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import service.ClienteService;
 import service.PedidoService;
 import service.ProdutoExportacaoService;
@@ -39,8 +42,27 @@ public class PedidoMB implements Serializable {
     private Produto produto;
     private final ProdutoMercadoInternoService produtoMIService = new ProdutoMercadoInternoService();
     private final ProdutoExportacaoService produtoExpService = new ProdutoExportacaoService();
-    
+    private int clienteId;
+    private int produtoId;
     private int quantidade;
+
+    public int getProdutoId() {
+        return produtoId;
+    }
+
+    public void setProdutoId(int produtoId) {
+        this.produtoId = produtoId;
+    }
+
+    
+    
+    public int getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
+    }
 
     public ItemPedido getSelectedItem() {
         return selectedItem;
@@ -48,6 +70,15 @@ public class PedidoMB implements Serializable {
 
     public void setSelectedItem(ItemPedido selectedItem) {
         this.selectedItem = selectedItem;
+    }
+    
+    public List<Produto> getProdutos() {
+        List<Produto> produtos = new ArrayList<>();
+        for(Produto p : getProdutosExportacao())
+            produtos.add(p);
+        for(Produto p : getProdutosMercadoInterno())
+            produtos.add(p);
+        return produtos;
     }
     
     public List<ProdutoExportacao> getProdutosExportacao() {
@@ -83,14 +114,26 @@ public class PedidoMB implements Serializable {
     }
     
     public void addPedido() {
+        Cliente cli = clienteService.getClienteByCodigo(clienteId);
+        pedido.setCliente(cli);
         Calendar c = Calendar.getInstance();
         pedido.setData(c.getTime());
         service.salvar(pedido);
         pedido.getCliente().addPedido(pedido);
+        clienteService.salvar(pedido.getCliente());
         pedido = new Pedido();
     }
     
     public void addItemPedido() {
+        ProdutoExportacao pE = produtoExpService.getProdutoByCodigo(produtoId);
+        ProdutoMercadoInterno pMI = produtoMIService.getProdutoByCodigo(produtoId);
+        Produto p = null;
+        
+        if(pE == null)
+            p = pMI;
+        else
+            p = pE;
+        
         if(quantidade != 0)
             pedido.addItem(quantidade, produto);
         quantidade = 0;
@@ -98,6 +141,7 @@ public class PedidoMB implements Serializable {
     
     public void removeItemPedido(Pedido pedido, ItemPedido item) {
         pedido.removeItem(item.getNumero());
+        //service.salvar(pedido);
     }
     
     public void removePedido() {
@@ -129,5 +173,13 @@ public class PedidoMB implements Serializable {
                 ((Pedido) event.getObject()).getNumero());
         FacesContext.getCurrentInstance().
                 addMessage(null, msg);
+    }
+    
+    public void onRowSelect(SelectEvent event) {
+        pedido = selectedPedido;
+    }
+    
+    public void onRowUnselect(UnselectEvent event) {
+        pedido = new Pedido();
     }
 }

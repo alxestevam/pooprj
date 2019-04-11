@@ -20,9 +20,6 @@ import model.Produto;
  */
 public class CategoriaService implements Serializable {
 
-    private ArrayList<Categoria> categorias = Dados.getCategorias();
-    private ArrayList<Produto> produtos = Dados.getProdutos();
-    
     private EntityManagerFactory emf;
 
     public CategoriaService() {
@@ -30,23 +27,18 @@ public class CategoriaService implements Serializable {
     }
 
     public void removeCategoria(Categoria categoria) {
-        boolean remove = true;
-        
-        for(Produto produto : produtos) {
-            if(produto.getCategoria().equals(categoria)) {
-                remove = false;
-                break;
-            }
-        }
-        if(remove) {
-            EntityManager em = emf.createEntityManager();
+        EntityManager em = emf.createEntityManager();
+
+        try {
             em.getTransaction().begin();
             Categoria c = em.find(Categoria.class, categoria.getId());
             em.remove(c);
             em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Não foi possivel remover");
+        } finally {
             em.close();
         }
-            
     }
 
     public List<Categoria> getCategorias() {
@@ -55,7 +47,7 @@ public class CategoriaService implements Serializable {
         em.close();
         return c;
     }
-    
+
     public Categoria getCategoriaById(int id) {
         EntityManager em = emf.createEntityManager();
         Categoria c = em.find(Categoria.class, id);
@@ -63,34 +55,19 @@ public class CategoriaService implements Serializable {
         return c;
     }
 
-    public Categoria getCategoriaByDescricao(String value) {
-        for (Categoria c : categorias) {
-            if (c.getDescricao().equals(value)) {
-                return c;
-            }
-
-        }
-        return null;
-    }
-    
     public void salvar(Categoria c) {
-        boolean add = true;
-        if(!c.getDescricao().equals("")) {
-            for(Categoria i : categorias) {
-                if(i.getDescricao().equals(c.getDescricao())) {
-                    add = false;
-                    break;
-                }
-            }
-            if(add) {
-                EntityManager em = emf.createEntityManager();
-                em.getTransaction().begin();
-                em.merge(c);
-                em.getTransaction().commit();
-                em.close();
-            }
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(c);
+            em.getTransaction().commit();
+        }
+        catch(Exception e) {
+            System.out.println("Não foi possivel salvar");
+        }
+        finally {
+            em.close();
         }
     }
-
 
 }

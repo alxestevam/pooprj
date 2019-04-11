@@ -6,6 +6,9 @@
 package service;
 
 import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import model.Categoria;
 import model.Cliente;
 import model.Pedido;
@@ -19,13 +22,41 @@ import model.ProdutoMercadoInterno;
  */
 public class Dados {
     private static ArrayList<Categoria> LISTA_CATEGORIAS;
-    private static ArrayList<Produto> LISTA_PRODUTOS;
+    private static ArrayList<Produto> LISTA_PRODUTOSEXP;
+    private static ArrayList<Produto> LISTA_PRODUTOSMI;
     private static ArrayList<Cliente> LISTA_CLIENTES;
     private static ArrayList<Pedido> LISTA_PEDIDOS;
+    private static EntityManagerFactory emf;
+    
+    public static void main(String[] args) {
+        emf = Persistence.createEntityManagerFactory("PrjLojaPU");
+        Dados.init();
+        
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            for(Categoria c : LISTA_CATEGORIAS)
+                em.merge(c);
+            for(Produto c : LISTA_PRODUTOSEXP)
+                em.merge(c);
+            for(Produto c : LISTA_PRODUTOSMI)
+                em.merge(c);
+            for(Cliente c : LISTA_CLIENTES)
+                em.merge(c);
+            for(Pedido c : LISTA_PEDIDOS)
+                em.merge(c);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Não foi possivel salvar");
+        } finally {
+            em.close();
+        }
+    }
 
     private static void init() {
         LISTA_CATEGORIAS = new ArrayList();
-        LISTA_PRODUTOS = new ArrayList();
+        LISTA_PRODUTOSEXP = new ArrayList();
+        LISTA_PRODUTOSMI = new ArrayList();
         LISTA_CLIENTES = new ArrayList();
         LISTA_PEDIDOS = new ArrayList();
         
@@ -61,54 +92,28 @@ public class Dados {
         LISTA_CATEGORIAS.add(eletrodomesticos);
         LISTA_CATEGORIAS.add(eletronicos);
         
-        LISTA_PRODUTOS.add(askov);
-        LISTA_PRODUTOS.add(jack);
-        LISTA_PRODUTOS.add(catuaba);
-        LISTA_PRODUTOS.add(agua);
-        LISTA_PRODUTOS.add(leite);
-        LISTA_PRODUTOS.add(suco);
-        LISTA_PRODUTOS.add(pao);
-        LISTA_PRODUTOS.add(picanha);
-        LISTA_PRODUTOS.add(pizza);
-        LISTA_PRODUTOS.add(geladeira);
-        LISTA_PRODUTOS.add(fogao);        
-        LISTA_PRODUTOS.add(cafeteira);
-        LISTA_PRODUTOS.add(dvd);
-        LISTA_PRODUTOS.add(pc);
-        LISTA_PRODUTOS.add(ps4);
+        LISTA_PRODUTOSMI.add(askov);
+        LISTA_PRODUTOSMI.add(jack);
+        LISTA_PRODUTOSMI.add(catuaba);
+        LISTA_PRODUTOSMI.add(agua);
+        LISTA_PRODUTOSMI.add(leite);
+        LISTA_PRODUTOSMI.add(suco);
+        LISTA_PRODUTOSMI.add(pao);
+        LISTA_PRODUTOSMI.add(picanha);
+        LISTA_PRODUTOSEXP.add(pizza);
+        LISTA_PRODUTOSEXP.add(geladeira);
+        LISTA_PRODUTOSEXP.add(fogao);        
+        LISTA_PRODUTOSEXP.add(cafeteira);
+        LISTA_PRODUTOSEXP.add(dvd);
+        LISTA_PRODUTOSEXP.add(pc);
+        LISTA_PRODUTOSEXP.add(ps4);
         
         LISTA_CLIENTES.add(a);
         LISTA_CLIENTES.add(b);
         LISTA_CLIENTES.add(c);
         
-    }
-    
-    public static ArrayList<Categoria> getCategorias() {
-        if (LISTA_CATEGORIAS == null) {
-            init();
-        }
-        return LISTA_CATEGORIAS;
-    }
-    
-    public static ArrayList<Produto> getProdutos() {
-        if (LISTA_PRODUTOS == null) {
-            init();
-        }
-        return LISTA_PRODUTOS;
-    }
-    
-    public static ArrayList<Cliente> getClientes() {
-        if (LISTA_CLIENTES == null) {
-            init();
-        }
-        return LISTA_CLIENTES;
-    }
-    
-    public static ArrayList<Pedido> getPedidos() {
-        if (LISTA_PEDIDOS == null) {
-            init();
-        }
-        return LISTA_PEDIDOS;
+        
+        
     }
 
 }

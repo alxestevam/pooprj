@@ -20,7 +20,6 @@ public class ProdutoMercadoInterno extends Produto {
     private boolean incentivo;
 
     public ProdutoMercadoInterno() {
-        //this.setTipo(1);
     }
 
     public ProdutoMercadoInterno(int codigo, String nome, Categoria categoria, double preco, int moeda, double imposto, boolean incentivo) {

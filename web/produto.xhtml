@@ -31,7 +31,7 @@
                 <p:selectOneMenu value="#{produtoMB.escolhaTipo}" style="width:100%">
                     <f:selectItem itemLabel="Exportação" itemValue="0"/>
                     <f:selectItem itemLabel="Mercado Interno" itemValue="1"/>
-                    <p:ajax event="change" process="cadastroProdPanel" update="cadastroProdPanel"/>
+                    <p:ajax event="change" process="cadastroProdPanel" update="formProd"/>
                 </p:selectOneMenu>
                 <p:outputLabel rendered="#{produtoMB.escolhaTipo eq 0}" value="Destino: "/>
                 <p:inputText   rendered="#{produtoMB.escolhaTipo eq 0}" value="#{produtoMB.destino}"/>
@@ -46,7 +46,7 @@
             <p:growl id="msgs" showDetail="true"/>
             
             
-            <h:panelGroup id="groupDataTable">
+            <h:panelGroup id="groupDataTable" rendered="#{produtoMB.escolhaTipo eq 0}">
                 <p:dataTable id="dataTableProdExp"
                              var="f" value="#{produtoMB.produtosExportacao}"
                          rows="10"
@@ -57,6 +57,7 @@
                          selection="#{produtoMB.selectedProdutoExp}"
                          selectionMode="single"
                          rowKey="#{f.codigo}"
+                         
                          >
 
 
@@ -89,7 +90,7 @@
                     <p:cellEditor>
                         <f:facet name="output"> <p:outputLabel value="#{f.categoria.descricao}"/></f:facet>
                         <f:facet name="input" >
-                            <p:selectOneMenu value="#{f.categoria}" converter="converterCategoria" style="width:100%">
+                            <p:selectOneMenu value="#{f.categoria}" style="width:100%">
                                 <f:selectItems value="#{produtoMB.categorias}" var="aux"
                                                itemValue="#{aux}" itemLabel="#{aux.descricao}"
                                                />
@@ -120,9 +121,9 @@
                             actionListener="#{produtoMB.removeProdutoExportacao}"/>
             </p:contextMenu>
             
-            <h:panelGroup id="groupDataTable">
+            <h:panelGroup id="groupDataTable2" rendered="#{produtoMB.escolhaTipo eq 1}">
                 <p:dataTable id="dataTableProdMI"
-                             var="f" value="#{produtoMB.produtosMercadoInterno}"
+                             var="a" value="#{produtoMB.produtosMercadoInterno}"
                          rows="10"
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -130,7 +131,7 @@
                          editable="true"
                          selection="#{produtoMB.selectedProdutoMI}"
                          selectionMode="single"
-                         rowKey="#{f.codigo}"
+                         rowKey="#{a.codigo}"
                          >
 
 
@@ -140,22 +141,22 @@
                 <p:ajax event="rowUnselect" listener="#{produtoMB.onRowUnselectMI}" update=":formProd" />
 
                 <p:column headerText="Codigo">
-                    <p:outputLabel value="#{f.codigo}"/>
+                    <p:outputLabel value="#{a.codigo}"/>
                 </p:column>
-                <p:column headerText="Nome" filterBy="#{f.nome}" 
+                <p:column headerText="Nome" filterBy="#{a.nome}" 
                           filterMatchMode="contains" >
-                    <p:outputLabel value="#{f.nome}"/>
+                    <p:outputLabel value="#{a.nome}"/>
                 </p:column>
                 <p:column headerText="Preco">
                     <p:cellEditor>
-                        <f:facet name="output"><p:outputLabel value="#{f.preco}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{f.preco}" style="width:100%" label="Preco"/></f:facet>
+                        <f:facet name="output"><p:outputLabel value="#{a.preco}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{a.preco}" style="width:100%" label="Preco"/></f:facet>
                     </p:cellEditor>
                 </p:column>
                 <p:column headerText="Imposto">
                     <p:cellEditor>
-                        <f:facet name="output"><p:outputLabel value="#{f.imposto}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{f.imposto}" style="width:100%" label="Imposto"/></f:facet>
+                        <f:facet name="output"><p:outputLabel value="#{a.imposto}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{a.imposto}" style="width:100%" label="Imposto"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
@@ -163,9 +164,9 @@
                     <p:cellEditor>
                         <f:facet name="output"> <p:outputLabel value="#{f.categoria.descricao}"/></f:facet>
                         <f:facet name="input" >
-                            <p:selectOneMenu value="#{f.categoria}" converter="converterCategoria" style="width:100%">
+                            <p:selectOneMenu value="#{a.categoria}" style="width:100%">
                                 <f:selectItems value="#{produtoMB.categorias}" var="aux"
-                                               itemValue="#{aux}" itemLabel="#{aux.descricao}"
+                                               itemValue="#{aux.id}" itemLabel="#{aux.descricao}"
                                                />
                             </p:selectOneMenu>
                         </f:facet>
@@ -173,12 +174,12 @@
                 </p:column>
 
                 <p:column headerText="Incentivo">
-                    <p:outputLabel value="#{f.incentivo ? 'Sim' : 'Não'}"/>
+                    <p:outputLabel value="#{a.incentivo ? 'Sim' : 'Não'}"/>
                 </p:column>
 
                 <p:column style="width:32px">
                     <p:commandLink styleClass="ui-icon ui-icon-trash" 
-                                   actionListener="#{produtoMB.removeProdutoMercadoInterno(f)}"
+                                   actionListener="#{produtoMB.removeProdutoMercadoInterno(a)}"
                                    update="dataTableProdMI"
                                    />
                 </p:column>
@@ -187,9 +188,9 @@
             </h:panelGroup>
             
 
-            <p:contextMenu for="dataTableProdExp"">
+            <p:contextMenu for="dataTableProdMI">
                 <p:menuitem value="Remove" 
-                            update="dataTableProdExp" 
+                            update="dataTableProdMI" 
                             icon="ui-icon-close" 
                             actionListener="#{produtoMB.removeProdutoMercadoInterno}"/>
             </p:contextMenu>

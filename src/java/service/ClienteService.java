@@ -27,7 +27,6 @@ public class ClienteService implements Serializable {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
 
-    private final ArrayList<Cliente> clientes = Dados.getClientes();
     private final PedidoService pedidoService = new PedidoService();
 
     public void removeCliente(Cliente cliente) {

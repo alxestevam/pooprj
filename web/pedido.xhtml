@@ -15,15 +15,15 @@
             <p:growl id="msgs" showDetail="true"/>
             <p:panelGrid columns="2" id="cadastroProdPanel">
                 <p:outputLabel value="Código do cliente:"/>
-                <p:selectOneMenu value="#{pedidoMB.pedido.cliente}" converter="converterCliente" style="width:100%">
+                <p:selectOneMenu value="#{pedidoMB.clienteId}" style="width:100%">
                     <f:selectItems value="#{pedidoMB.clientes}" var="aux"
-                                   itemValue="#{aux}" itemLabel="#{aux.codigo}" />
+                                   itemValue="#{aux.codigo}" itemLabel="#{aux.nome}" />
                 </p:selectOneMenu>
                 
                 <p:outputLabel value="Produto:"/>
-                <p:selectOneMenu value="#{pedidoMB.produto}" converter="converterProduto" style="width:100%">
+                <p:selectOneMenu value="#{pedidoMB.produtoId}" style="width:100%">
                     <f:selectItems value="#{pedidoMB.produtos}" var="aux"
-                                   itemValue="#{aux}" itemLabel="#{aux.nome}" />
+                                   itemValue="#{aux.codigo}" itemLabel="#{aux.nome}" />
                 </p:selectOneMenu>
                 <p:outputLabel value="Quantidade"/>
                 <p:inputText value="#{pedidoMB.quantidade}"/>
@@ -47,6 +47,8 @@
                 
                 
                 <p:ajax event="rowEdit" listener="#{pedidoMB.onRowEdit}" update=":formPedido:msgs" />
+                <p:ajax event="rowSelect" listener="#{pedidoMB.onRowSelect}" update=":formPedido" />
+                <p:ajax event="rowUnselect" listener="#{pedidoMB.onRowUnselect}" update=":formPedido" />
                 
                 <p:column headerText="Número">
                     <p:outputLabel value="#{item.numero}"/>
@@ -60,9 +62,6 @@
                     <p:outputLabel value="#{item.quantidade}"/>
                 </p:column>
                 
-                <p:column style="width:32px">
-                    <p:rowEditor />
-                </p:column>
                 <p:column style="width:32px">
                     <p:commandLink styleClass="ui-icon ui-icon-trash" 
                                    actionListener="#{pedidoMB.removeItemPedido(pedidoMB.produto, item)}"
