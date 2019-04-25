@@ -137,7 +137,7 @@ public class PedidoMB implements Serializable {
         }
 
         if (quantidade != 0) {
-            pedido.addItem(quantidade, produto);
+            pedido.addItem(quantidade, p);
         }
         quantidade = 0;
     }

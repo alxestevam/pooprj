@@ -6,6 +6,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -86,6 +87,20 @@ public class Dados {
         Cliente b = new Cliente(2, "Felipe Eiji", "Rua. Sei la", "11923456789", 0, 0);
         Cliente c = new Cliente(3, "Jesus Christ", "Heaven", "777777", 0, 0);
         
+        Date systemDate = new Date();
+        
+        Pedido d = new Pedido();
+        d.addItem(1, fogao);
+        d.addItem(1, picanha);
+        d.setData(systemDate);
+        d.setCliente(a);
+        
+        Pedido e = new Pedido();
+        e.addItem(2, geladeira);
+        e.addItem(4, pizza);
+        e.setData(systemDate);
+        e.setCliente(b);
+        
         LISTA_CATEGORIAS.add(bebidas_alcoolicas);
         LISTA_CATEGORIAS.add(bebidas_nao_alcoolicas);
         LISTA_CATEGORIAS.add(alimentos);
@@ -111,6 +126,10 @@ public class Dados {
         LISTA_CLIENTES.add(a);
         LISTA_CLIENTES.add(b);
         LISTA_CLIENTES.add(c);
+        
+        LISTA_PEDIDOS.add(d);
+        LISTA_PEDIDOS.add(e);
+        
         
         
         

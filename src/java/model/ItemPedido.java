@@ -34,8 +34,7 @@ public class ItemPedido implements Serializable {
     public ItemPedido() {
     }
 
-    public ItemPedido(int numero, int quantidade, Produto produto) {
-        this.numero = numero;
+    public ItemPedido(int quantidade, Produto produto) {
         this.quantidade = quantidade;
         this.produto = produto;
     }

@@ -13,6 +13,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.SEQUENCE;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,6 +31,7 @@ public class Pedido implements Serializable {
 
     @Id
     @Column(name = "PEDIDO_ID")
+    @GeneratedValue(strategy = SEQUENCE)
     private long numero;
 
     @Temporal(TemporalType.DATE)
@@ -50,14 +53,18 @@ public class Pedido implements Serializable {
 
     public void addItem(int quantidade, Produto produto) {
         numItem++;
-        ItemPedido itemPedido = new ItemPedido(numItem, quantidade, produto);
+        ItemPedido itemPedido = new ItemPedido(quantidade, produto);
         itens.add(itemPedido);
     }
 
     public ArrayList<ItemPedido> getListItens() {
         ArrayList<ItemPedido> list = new ArrayList<>();
+        ItemPedido itemClone;
+        
         for (ItemPedido item : itens) {
-            list.add(new ItemPedido(item.getNumero(), item.getQuantidade(), item.getProduto()));
+            itemClone = new ItemPedido(item.getQuantidade(), item.getProduto());
+            itemClone.setNumero(item.getNumero());
+            list.add(itemClone);
         }
         return list;
     }
