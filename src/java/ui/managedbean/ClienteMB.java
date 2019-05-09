@@ -3,19 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean;
+package ui.managedbean;
 
+import domain.interfaces.service.IClienteService;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import model.Cliente;
+import domain.model.Cliente;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import service.ClienteService;
+import domain.service.ClienteService;
+import infra.data.repository.ClienteRepository;
 
 /**
  *
@@ -26,7 +28,7 @@ import service.ClienteService;
 public class ClienteMB implements Serializable {
 
     private Cliente cliente = new Cliente();
-    private final ClienteService service = new ClienteService();
+    private final IClienteService service = new ClienteService(new ClienteRepository());
     private Cliente selectedCliente;
     private boolean editandoCliente;
 

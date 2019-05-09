@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean;
+package ui.managedbean;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,11 +11,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import model.Categoria;
+import domain.model.Categoria;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import service.CategoriaService;
+import domain.service.CategoriaService;
 
 /**
  *

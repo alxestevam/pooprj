@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean;
+package ui.managedbean;
 
+import domain.interfaces.service.IClienteService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,19 +14,20 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import model.Cliente;
-import model.ItemPedido;
-import model.Pedido;
-import model.Produto;
-import model.ProdutoExportacao;
-import model.ProdutoMercadoInterno;
+import domain.model.Cliente;
+import domain.model.ItemPedido;
+import domain.model.Pedido;
+import domain.model.Produto;
+import domain.model.ProdutoExportacao;
+import domain.model.ProdutoMercadoInterno;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import service.ClienteService;
-import service.PedidoService;
-import service.ProdutoExportacaoService;
-import service.ProdutoMercadoInternoService;
+import domain.service.ClienteService;
+import domain.service.PedidoService;
+import domain.service.ProdutoExportacaoService;
+import domain.service.ProdutoMercadoInternoService;
+import infra.data.repository.ClienteRepository;
 
 /**
  *
@@ -39,7 +41,7 @@ public class PedidoMB implements Serializable {
     private final PedidoService service = new PedidoService();
     private Pedido selectedPedido;
     private ItemPedido selectedItem;
-    private final ClienteService clienteService = new ClienteService();
+    private final IClienteService clienteService = new ClienteService(new ClienteRepository());
     private Produto produto;
     private final ProdutoMercadoInternoService produtoMIService = new ProdutoMercadoInternoService();
     private final ProdutoExportacaoService produtoExpService = new ProdutoExportacaoService();

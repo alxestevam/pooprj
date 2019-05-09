@@ -3,53 +3,38 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package domain.service;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import model.Pedido;
-import model.Produto;
+import domain.model.Categoria;
 
 /**
  *
  * @author 141812
  */
-public class PedidoService {
+public class CategoriaService implements Serializable {
 
-    private final EntityManagerFactory emf;
+    private EntityManagerFactory emf;
 
-    public PedidoService() {
+    public CategoriaService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Insert">
-    public void salvar(Pedido pedido) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.merge(pedido);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("Não foi possivel salvar");
-        } finally {
-            em.close();
-        }
-    }
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="Remove">
-    public void removePedido(Pedido pedido) {
+    public void removeCategoria(Categoria categoria) {
         EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
-            Produto c = em.find(Produto.class, pedido.getNumero());
+            Categoria c = em.find(Categoria.class, categoria.getId());
             em.remove(c);
             em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Não foi possível excluir");
+            System.out.println("Não foi possivel remover");
         } finally {
             em.close();
         }
@@ -57,20 +42,35 @@ public class PedidoService {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Read All">
-    public List<Pedido> getPedidos() {
+    public List<Categoria> getCategorias() {
         EntityManager em = emf.createEntityManager();
-        List<Pedido> c = em.createQuery("select c from Pedido c").getResultList();
+        List<Categoria> c = em.createQuery("select c from Categoria c").getResultList();
         em.close();
         return c;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Find By Id">
-    public Pedido getPedidoByNumero(int numero) {
+    public Categoria getCategoriaById(int id) {
         EntityManager em = emf.createEntityManager();
-        Pedido c = em.find(Pedido.class, numero);
+        Categoria c = em.find(Categoria.class, id);
         em.close();
         return c;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Inserir">
+    public void salvar(Categoria c) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(c);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Não foi possivel salvar");
+        } finally {
+            em.close();
+        }
     }
     // </editor-fold>
 

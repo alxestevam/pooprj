@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package domain.service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import model.Categoria;
-import model.Cliente;
-import model.Pedido;
-import model.Produto;
-import model.ProdutoExportacao;
-import model.ProdutoMercadoInterno;
+import domain.model.Categoria;
+import domain.model.Cliente;
+import domain.model.Pedido;
+import domain.model.Produto;
+import domain.model.ProdutoExportacao;
+import domain.model.ProdutoMercadoInterno;
 
 /**
  *

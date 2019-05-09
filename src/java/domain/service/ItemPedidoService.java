@@ -3,34 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package domain.service;
 
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import model.Produto;
-import model.ProdutoMercadoInterno;
+import domain.model.ItemPedido;
 
 /**
  *
  * @author 141812
  */
-public class ProdutoMercadoInternoService {
+public class ItemPedidoService {
 
     private final EntityManagerFactory emf;
 
-    public ProdutoMercadoInternoService() {
+    public ItemPedidoService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
 
     // <editor-fold defaultstate="collapsed" desc="Remove">
-    public void removeProduto(ProdutoMercadoInterno produto) {
+    /**
+     * @deprecated @param itemPedido
+     */
+    public void removeItemPedido(ItemPedido itemPedido) {
         EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
-            Produto c = em.find(Produto.class, produto.getCodigo());
+            ItemPedido c = em.find(ItemPedido.class, itemPedido.getNumero());
             em.remove(c);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -42,29 +44,29 @@ public class ProdutoMercadoInternoService {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Read All">
-    public List<ProdutoMercadoInterno> getProdutosMercadoInterno() {
+    public List<ItemPedido> getItensPedidos() {
         EntityManager em = emf.createEntityManager();
-        List<ProdutoMercadoInterno> c = em.createQuery("select c from ProdutoMercadoInterno c").getResultList();
+        List<ItemPedido> c = em.createQuery("select c from ItemPedido c").getResultList();
         em.close();
         return c;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Find By Id">
-    public ProdutoMercadoInterno getProdutoByCodigo(int codigo) {
+    public ItemPedido getItemPedidoByNumero(int numero) {
         EntityManager em = emf.createEntityManager();
-        ProdutoMercadoInterno c = em.find(ProdutoMercadoInterno.class, codigo);
+        ItemPedido c = em.find(ItemPedido.class, numero);
         em.close();
         return c;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Insert">
-    public void salvar(ProdutoMercadoInterno produto) {
+    public void salvar(ItemPedido itemPedido) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.merge(produto);
+            em.merge(itemPedido);
             em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Não foi possivel salvar");

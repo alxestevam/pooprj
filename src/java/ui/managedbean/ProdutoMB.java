@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean;
+package ui.managedbean;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -12,16 +12,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import model.Categoria;
-import model.Produto;
-import model.ProdutoExportacao;
-import model.ProdutoMercadoInterno;
+import domain.model.Categoria;
+import domain.model.Produto;
+import domain.model.ProdutoExportacao;
+import domain.model.ProdutoMercadoInterno;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import service.CategoriaService;
-import service.ProdutoExportacaoService;
-import service.ProdutoMercadoInternoService;
+import domain.service.CategoriaService;
+import domain.service.ProdutoExportacaoService;
+import domain.service.ProdutoMercadoInternoService;
 
 /**
  *

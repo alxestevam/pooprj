@@ -3,29 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package domain.service;
 
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import model.Produto;
-import model.ProdutoExportacao;
+import domain.model.Produto;
+import domain.model.ProdutoMercadoInterno;
 
 /**
  *
  * @author 141812
  */
-public class ProdutoExportacaoService {
+public class ProdutoMercadoInternoService {
 
     private final EntityManagerFactory emf;
 
-    public ProdutoExportacaoService() {
+    public ProdutoMercadoInternoService() {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
     }
 
     // <editor-fold defaultstate="collapsed" desc="Remove">
-    public void removeProduto(ProdutoExportacao produto) {
+    public void removeProduto(ProdutoMercadoInterno produto) {
         EntityManager em = emf.createEntityManager();
 
         try {
@@ -42,25 +42,25 @@ public class ProdutoExportacaoService {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Read All">
-    public List<ProdutoExportacao> getProdutosExportacao() {
+    public List<ProdutoMercadoInterno> getProdutosMercadoInterno() {
         EntityManager em = emf.createEntityManager();
-        List<ProdutoExportacao> c = em.createQuery("select c from ProdutoExportacao c").getResultList();
+        List<ProdutoMercadoInterno> c = em.createQuery("select c from ProdutoMercadoInterno c").getResultList();
         em.close();
         return c;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Find By Id">
-    public ProdutoExportacao getProdutoByCodigo(int codigo) {
+    public ProdutoMercadoInterno getProdutoByCodigo(int codigo) {
         EntityManager em = emf.createEntityManager();
-        ProdutoExportacao c = em.find(ProdutoExportacao.class, codigo);
+        ProdutoMercadoInterno c = em.find(ProdutoMercadoInterno.class, codigo);
         em.close();
         return c;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Insert">
-    public void salvar(ProdutoExportacao produto) {
+    public void salvar(ProdutoMercadoInterno produto) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
