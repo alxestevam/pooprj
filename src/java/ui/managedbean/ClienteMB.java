@@ -31,6 +31,7 @@ public class ClienteMB implements Serializable {
     private final IClienteService service = new ClienteService(new ClienteRepository());
     private Cliente selectedCliente;
     private boolean editandoCliente;
+    
 
     public boolean isEditandoCliente() {
         return editandoCliente;

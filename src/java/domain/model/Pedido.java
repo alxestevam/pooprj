@@ -46,13 +46,11 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "CLIENTE_ID")
     private Cliente cliente;
 
-    private int numItem = 0;
 
     public Pedido() {
     }
 
     public void addItem(int quantidade, Produto produto) {
-        numItem++;
         ItemPedido itemPedido = new ItemPedido(quantidade, produto);
         itens.add(itemPedido);
     }

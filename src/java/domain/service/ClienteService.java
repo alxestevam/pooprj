@@ -7,13 +7,8 @@ package domain.service;
 
 import domain.interfaces.repository.IClienteRepository;
 import domain.interfaces.service.IClienteService;
-import java.io.Serializable;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import domain.model.Cliente;
-import infra.data.repository.ClienteRepository;
 
 /**
  *

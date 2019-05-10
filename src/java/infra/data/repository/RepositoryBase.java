@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import domain.interfaces.repository.IRepositoryBase;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -20,6 +21,12 @@ public class RepositoryBase<T extends Serializable, I> implements IRepositoryBas
 
     private static EntityManagerFactory emf;
     private EntityManager em;
+    
+    public RepositoryBase() {
+
+        emf = Persistence.createEntityManagerFactory("PrjLojaPU");
+
+    }
 
     public EntityManager getEntityManager() {
         if (em == null) {
@@ -68,7 +75,7 @@ public class RepositoryBase<T extends Serializable, I> implements IRepositoryBas
 
         return getEntityManager().
                 createQuery(
-                        "select o from"
+                        "select o from "
                         + classe.getSimpleName() + " o")
                 .getResultList();
     }
