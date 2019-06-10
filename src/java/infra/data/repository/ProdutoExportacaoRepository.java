@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.interfaces.repository;
+package infra.data.repository;
 
-import domain.model.ProdutoMercadoInterno;
+import domain.model.ProdutoExportacao;
 
 /**
  *
- * @author 171150
+ * @author 141812
  */
-public interface IProdutoMercadoInternoRepository extends IRepositoryBase<ProdutoMercadoInterno, Integer>{
+public class ProdutoExportacaoRepository extends RepositoryBase<ProdutoExportacao, Integer> {
+    
 }

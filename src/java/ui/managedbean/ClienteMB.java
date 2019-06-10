@@ -5,7 +5,6 @@
  */
 package ui.managedbean;
 
-import domain.interfaces.service.IClienteService;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -28,7 +27,7 @@ import infra.data.repository.ClienteRepository;
 public class ClienteMB implements Serializable {
 
     private Cliente cliente = new Cliente();
-    private final IClienteService service = new ClienteService(new ClienteRepository());
+    private final ClienteService service = new ClienteService();
     private Cliente selectedCliente;
     private boolean editandoCliente;
     
@@ -50,21 +49,21 @@ public class ClienteMB implements Serializable {
     }
 
     public void addCliente() {
-        service.salvar(cliente);
+        service.save(cliente);
         selectedCliente = null;
         cliente = new Cliente();
     }
 
     public void removeCliente() {
-        service.removeCliente(selectedCliente);
+        service.remove(selectedCliente);
     }
 
     public void removeCliente(Cliente c) {
-        service.removeCliente(c);
+        service.remove(c);
     }
 
     public List<Cliente> getClientes() {
-        return service.getClientes();
+        return service.getAll(Cliente.class);
     }
 
     public Cliente getSelectedCliente() {

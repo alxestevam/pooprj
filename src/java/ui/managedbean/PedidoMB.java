@@ -5,7 +5,6 @@
  */
 package ui.managedbean;
 
-import domain.interfaces.service.IClienteService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +27,9 @@ import domain.service.PedidoService;
 import domain.service.ProdutoExportacaoService;
 import domain.service.ProdutoMercadoInternoService;
 import infra.data.repository.ClienteRepository;
+import infra.data.repository.PedidoRepository;
+import infra.data.repository.ProdutoExportacaoRepository;
+import infra.data.repository.ProdutoMercadoInternoRepository;
 
 /**
  *
@@ -38,13 +40,17 @@ import infra.data.repository.ClienteRepository;
 public class PedidoMB implements Serializable {
 
     private Pedido pedido = new Pedido();
-    private final PedidoService service = new PedidoService();
+    private final PedidoService service
+            = new PedidoService();
     private Pedido selectedPedido;
     private ItemPedido selectedItem;
-    private final IClienteService clienteService = new ClienteService(new ClienteRepository());
+    private final ClienteService clienteService
+            = new ClienteService();
     private Produto produto;
-    private final ProdutoMercadoInternoService produtoMIService = new ProdutoMercadoInternoService();
-    private final ProdutoExportacaoService produtoExpService = new ProdutoExportacaoService();
+    private final ProdutoMercadoInternoService produtoMIService
+            = new ProdutoMercadoInternoService();
+    private final ProdutoExportacaoService produtoExpService
+            = new ProdutoExportacaoService();
     private int clienteId;
     private int produtoId;
     private int quantidade;
@@ -85,11 +91,11 @@ public class PedidoMB implements Serializable {
     }
 
     public List<ProdutoExportacao> getProdutosExportacao() {
-        return produtoExpService.getProdutosExportacao();
+        return produtoExpService.getAll(ProdutoExportacao.class);
     }
 
     public List<ProdutoMercadoInterno> getProdutosMercadoInterno() {
-        return produtoMIService.getProdutosMercadoInterno();
+        return produtoMIService.getAll(ProdutoMercadoInterno.class);
     }
 
     public Produto getProduto() {
@@ -117,20 +123,23 @@ public class PedidoMB implements Serializable {
     }
 
     public void addPedido() {
-        Cliente cli = clienteService.getClienteByCodigo(clienteId);
+        Cliente cli = (Cliente) clienteService.getById(Cliente.class, clienteId);
         pedido.setCliente(cli);
         Calendar c = Calendar.getInstance();
         pedido.setData(c.getTime());
-        service.salvar(pedido);
+        service.save(pedido);
         pedido.getCliente().addPedido(pedido);
-        clienteService.salvar(pedido.getCliente());
+        clienteService.save(pedido.getCliente());
         pedido = new Pedido();
     }
 
     public void addItemPedido() {
-        ProdutoExportacao pE = produtoExpService.getProdutoByCodigo(produtoId);
-        ProdutoMercadoInterno pMI = produtoMIService.getProdutoByCodigo(produtoId);
-        Produto p = null;
+        ProdutoExportacao pE
+                = (ProdutoExportacao) produtoExpService.getById(ProdutoExportacao.class, produtoId);
+        ProdutoMercadoInterno pMI
+                = (ProdutoMercadoInterno) produtoMIService.getById(ProdutoMercadoInterno.class, produtoId);
+
+        Produto p;
 
         if (pE == null) {
             p = pMI;
@@ -150,19 +159,19 @@ public class PedidoMB implements Serializable {
     }
 
     public void removePedido() {
-        service.removePedido(selectedPedido);
+        service.remove(selectedPedido);
     }
 
     public void removePedido(Pedido c) {
-        service.removePedido(c);
+        service.remove(c);
     }
 
     public List<Pedido> getPedidos() {
-        return service.getPedidos();
+        return service.getAll(Pedido.class);
     }
 
     public List<Cliente> getClientes() {
-        return clienteService.getClientes();
+        return clienteService.getAll(Cliente.class);
     }
 
     public Pedido getSelectedPedido() {

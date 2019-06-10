@@ -10,14 +10,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
-import domain.interfaces.repository.IRepositoryBase;
 import javax.persistence.Persistence;
 
 /**
  *
  * @author 171150
+ * @param <T>
+ * @param <I>
  */
-public class RepositoryBase<T extends Serializable, I> implements IRepositoryBase<T, I> {
+public abstract class RepositoryBase<T extends Serializable, I> {
 
     private static EntityManagerFactory emf;
     private EntityManager em;
@@ -43,7 +44,6 @@ public class RepositoryBase<T extends Serializable, I> implements IRepositoryBas
         em = null;
     }
 
-    @Override
     public T save(T entity) {
         T saved = null;
 
@@ -54,14 +54,12 @@ public class RepositoryBase<T extends Serializable, I> implements IRepositoryBas
         return saved;
     }
 
-    @Override
     public void remove(T entity) {
         getEntityManager().getTransaction().begin();
         getEntityManager().remove(entity);
         getEntityManager().getTransaction().commit();
     }
 
-    @Override
     public T getById(Class<T> classe, I pk) {
         try {
             return getEntityManager().find(classe, pk);
@@ -70,7 +68,6 @@ public class RepositoryBase<T extends Serializable, I> implements IRepositoryBas
         }
     }
 
-    @Override
     public List<T> getAll(Class<T> classe) {
 
         return getEntityManager().

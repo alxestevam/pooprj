@@ -5,12 +5,11 @@
  */
 package infra.data.repository;
 
-import domain.interfaces.repository.IClienteRepository;
 import domain.model.Cliente;
 
 /**
  *
  * @author 171150
  */
-public class ClienteRepository extends RepositoryBase<Cliente, Integer> implements IClienteRepository{
+public class ClienteRepository extends RepositoryBase<Cliente, Integer>{
 }

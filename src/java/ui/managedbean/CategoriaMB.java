@@ -16,6 +16,8 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import domain.service.CategoriaService;
+import infra.data.repository.CategoriaRepository;
+import utils.GrowlMessage;
 
 /**
  *
@@ -38,21 +40,32 @@ public class CategoriaMB implements Serializable {
     }
 
     public void addCategoria() {
-        service.salvar(categoria);
-        categoria = new Categoria();
-        selectedCategoria = null;
+        try {
+            service.save(categoria);
+            GrowlMessage.showMessage(FacesMessage.SEVERITY_INFO, "Categoria salva", null);
+        } catch (Exception e) {
+            GrowlMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Nao foi possivel salvar", null);
+        } finally {
+            categoria = new Categoria();
+            selectedCategoria = null;
+        }
     }
 
     public void removeCategoria() {
-        service.removeCategoria(selectedCategoria);
+        service.remove(selectedCategoria);
     }
 
     public void removeCategoria(Categoria c) {
-        service.removeCategoria(c);
+        try {
+            service.remove(c);
+            GrowlMessage.showMessage(FacesMessage.SEVERITY_INFO, "Categoria removida", null);
+        } catch (Exception e) {
+            GrowlMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Nao foi possivel remover", null);
+        }
     }
 
     public List<Categoria> getCategorias() {
-        return service.getCategorias();
+        return service.getAll(Categoria.class);
     }
 
     public Categoria getSelectedCategoria() {
@@ -64,10 +77,7 @@ public class CategoriaMB implements Serializable {
     }
 
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Categoria Editada",
-                ((Categoria) event.getObject()).getDescricao());
-        FacesContext.getCurrentInstance().
-                addMessage(null, msg);
+        GrowlMessage.showMessage(FacesMessage.SEVERITY_INFO, "Categoria editada", null);
     }
 
     public void onRowSelect(SelectEvent event) {

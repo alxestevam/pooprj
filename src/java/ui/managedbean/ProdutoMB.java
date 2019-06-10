@@ -22,6 +22,8 @@ import org.primefaces.event.UnselectEvent;
 import domain.service.CategoriaService;
 import domain.service.ProdutoExportacaoService;
 import domain.service.ProdutoMercadoInternoService;
+import infra.data.repository.ProdutoExportacaoRepository;
+import infra.data.repository.ProdutoMercadoInternoRepository;
 
 /**
  *
@@ -32,11 +34,14 @@ import domain.service.ProdutoMercadoInternoService;
 public class ProdutoMB implements Serializable {
 
     private Produto produto = new Produto();
-    private ProdutoMercadoInternoService serviceMI = new ProdutoMercadoInternoService();
-    private ProdutoExportacaoService serviceExp = new ProdutoExportacaoService();
+    private ProdutoMercadoInternoService serviceMI
+            = new ProdutoMercadoInternoService();
+    private ProdutoExportacaoService serviceExp
+            = new ProdutoExportacaoService();
     private ProdutoExportacao selectedProdutoExp;
     private ProdutoMercadoInterno selectedProdutoMI;
-    private CategoriaService categoriaService = new CategoriaService();
+    private CategoriaService categoriaService 
+            = new CategoriaService();
     private Categoria selectedCategoria;
     List<String> destinos = Arrays.asList("Exportação", "Mercado Interno");
     private String destino;
@@ -109,19 +114,19 @@ public class ProdutoMB implements Serializable {
     }
 
     public void addProduto() {
-        Categoria cat = categoriaService.getCategoriaById(categoriaId);
+        Categoria cat = (Categoria) categoriaService.getById(Categoria.class, categoriaId);
 
         if (cat != null) {
             if (getEscolhaTipo() == 0) {
                 ProdutoExportacao produtoExportacao = new ProdutoExportacao();
                 produtoExportacao.espProduto(produto, destino);
 
-                serviceExp.salvar(produtoExportacao);
+                serviceExp.save(produtoExportacao);
             } else if (getEscolhaTipo() == 1) {
                 ProdutoMercadoInterno produtoMercadoInterno = new ProdutoMercadoInterno();
                 produtoMercadoInterno.espProduto(produto, incentivo);
 
-                serviceMI.salvar(produtoMercadoInterno);
+                serviceMI.save(produtoMercadoInterno);
             }
 
             produto = new Produto();
@@ -130,27 +135,27 @@ public class ProdutoMB implements Serializable {
     }
 
     public void removeProdutoMercadoInterno() {
-        serviceMI.removeProduto(selectedProdutoMI);
+        serviceMI.remove(selectedProdutoMI);
     }
 
     public void removeProdutoMercadoInterno(ProdutoMercadoInterno p) {
-        serviceMI.removeProduto(p);
+        serviceMI.remove(p);
     }
 
     public void removeProdutoExportacao() {
-        serviceExp.removeProduto(selectedProdutoExp);
+        serviceExp.remove(selectedProdutoExp);
     }
 
     public void removeProdutoExportacao(ProdutoExportacao p) {
-        serviceExp.removeProduto(p);
+        serviceExp.remove(p);
     }
 
     public List<ProdutoExportacao> getProdutosExportacao() {
-        return serviceExp.getProdutosExportacao();
+        return serviceExp.getAll(ProdutoExportacao.class);
     }
 
     public List<ProdutoMercadoInterno> getProdutosMercadoInterno() {
-        return serviceMI.getProdutosMercadoInterno();
+        return serviceMI.getAll(ProdutoMercadoInterno.class);
     }
 
     public Categoria getSelectedCategoria() {
@@ -162,7 +167,7 @@ public class ProdutoMB implements Serializable {
     }
 
     public List<Categoria> getCategorias() {
-        return categoriaService.getCategorias();
+        return categoriaService.getAll(Categoria.class);
     }
 
     public void onRowEdit(RowEditEvent event) {
