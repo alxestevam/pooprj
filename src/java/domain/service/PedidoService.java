@@ -12,7 +12,7 @@ import infra.data.repository.PedidoRepository;
  *
  * @author 141812
  */
-public class PedidoService extends ServiceBase<PedidoRepository, Pedido, Integer>{
+public class PedidoService extends ServiceBase<Pedido, Integer>{
 
     public PedidoService() {
         super(new PedidoRepository());

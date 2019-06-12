@@ -12,7 +12,7 @@ import infra.data.repository.ProdutoMercadoInternoRepository;
  *
  * @author 141812
  */
-public class ProdutoMercadoInternoService extends ServiceBase<ProdutoMercadoInternoRepository, ProdutoMercadoInterno, Integer> {
+public class ProdutoMercadoInternoService extends ServiceBase<ProdutoMercadoInterno, Integer> {
 
     public ProdutoMercadoInternoService() {
         super(new ProdutoMercadoInternoRepository());

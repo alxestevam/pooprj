@@ -16,10 +16,10 @@ import java.util.List;
  * @param <I>
  * @param <K>
  */
-public abstract class ServiceBase<T extends RepositoryBase, I extends Serializable, K extends Number> {
-    public final T _repository;
+public abstract class ServiceBase<I extends Serializable, K extends Number> {
+    public final RepositoryBase _repository;
 
-    public ServiceBase(T _repository) {
+    public ServiceBase(RepositoryBase _repository) {
         this._repository = _repository;
     }
     

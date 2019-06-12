@@ -12,7 +12,7 @@ import infra.data.repository.ProdutoExportacaoRepository;
  *
  * @author 141812
  */
-public class ProdutoExportacaoService extends ServiceBase<ProdutoExportacaoRepository, ProdutoExportacao, Integer> {
+public class ProdutoExportacaoService extends ServiceBase<ProdutoExportacao, Integer> {
 
     public ProdutoExportacaoService() {
         super(new ProdutoExportacaoRepository());

@@ -12,7 +12,7 @@ import infra.data.repository.CategoriaRepository;
  *
  * @author 141812
  */
-public class CategoriaService extends ServiceBase<CategoriaRepository, Categoria, Integer> {
+public class CategoriaService extends ServiceBase<Categoria, Integer> {
     
     public CategoriaService() {
         super(new CategoriaRepository());

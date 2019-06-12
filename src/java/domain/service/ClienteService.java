@@ -12,7 +12,7 @@ import infra.data.repository.ClienteRepository;
  *
  * @author 141812
  */
-public class ClienteService extends ServiceBase<ClienteRepository, Cliente, Integer>{
+public class ClienteService extends ServiceBase<Cliente, Integer>{
 
     public ClienteService() {
         super(new ClienteRepository());
