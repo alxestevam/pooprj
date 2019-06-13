@@ -7,16 +7,14 @@ package ui.managedbean;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import domain.model.Cliente;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import domain.service.ClienteService;
-import infra.data.repository.ClienteRepository;
+import utils.GrowlMessage;
 
 /**
  *
@@ -30,7 +28,6 @@ public class ClienteMB implements Serializable {
     private final ClienteService service = new ClienteService();
     private Cliente selectedCliente;
     private boolean editandoCliente;
-    
 
     public boolean isEditandoCliente() {
         return editandoCliente;
@@ -49,17 +46,28 @@ public class ClienteMB implements Serializable {
     }
 
     public void addCliente() {
-        service.save(cliente);
+
+        if (service.save(cliente) != null) {
+            GrowlMessage.statusMessage(Cliente.class, GrowlMessage.MessageOption.SAVE, true);
+        } else {
+            GrowlMessage.statusMessage(Cliente.class, GrowlMessage.MessageOption.SAVE, false);
+        }
         selectedCliente = null;
         cliente = new Cliente();
+
     }
 
     public void removeCliente() {
-        service.remove(selectedCliente);
+        removeCliente(selectedCliente);
+
     }
 
     public void removeCliente(Cliente c) {
-        service.remove(c);
+        if (service.remove(c)) {
+            GrowlMessage.statusMessage(Cliente.class, GrowlMessage.MessageOption.REMOVE, true);
+        } else {
+            GrowlMessage.statusMessage(Cliente.class, GrowlMessage.MessageOption.REMOVE, false);
+        }
     }
 
     public List<Cliente> getClientes() {
@@ -75,10 +83,7 @@ public class ClienteMB implements Serializable {
     }
 
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Cliente Editado "
-                + ((Cliente) event.getObject()).getCodigo());
-        FacesContext.getCurrentInstance().
-                addMessage(null, msg);
+        GrowlMessage.statusMessage(Cliente.class, GrowlMessage.MessageOption.EDIT, true);
     }
 
     public void onRowSelect(SelectEvent event) {

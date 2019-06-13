@@ -22,8 +22,7 @@ import org.primefaces.event.UnselectEvent;
 import domain.service.CategoriaService;
 import domain.service.ProdutoExportacaoService;
 import domain.service.ProdutoMercadoInternoService;
-import infra.data.repository.ProdutoExportacaoRepository;
-import infra.data.repository.ProdutoMercadoInternoRepository;
+import utils.GrowlMessage;
 
 /**
  *
@@ -34,13 +33,13 @@ import infra.data.repository.ProdutoMercadoInternoRepository;
 public class ProdutoMB implements Serializable {
 
     private Produto produto = new Produto();
-    private ProdutoMercadoInternoService serviceMI
+    private final ProdutoMercadoInternoService serviceMI
             = new ProdutoMercadoInternoService();
-    private ProdutoExportacaoService serviceExp
+    private final ProdutoExportacaoService serviceExp
             = new ProdutoExportacaoService();
     private ProdutoExportacao selectedProdutoExp;
     private ProdutoMercadoInterno selectedProdutoMI;
-    private CategoriaService categoriaService 
+    private final CategoriaService categoriaService 
             = new CategoriaService();
     private Categoria selectedCategoria;
     List<String> destinos = Arrays.asList("Exportação", "Mercado Interno");
@@ -115,18 +114,29 @@ public class ProdutoMB implements Serializable {
 
     public void addProduto() {
         Categoria cat = (Categoria) categoriaService.getById(Categoria.class, categoriaId);
+        boolean status = false;
 
         if (cat != null) {
             if (getEscolhaTipo() == 0) {
                 ProdutoExportacao produtoExportacao = new ProdutoExportacao();
                 produtoExportacao.espProduto(produto, destino);
 
-                serviceExp.save(produtoExportacao);
+                if(serviceExp.save(produtoExportacao) != null) {
+                    status = true;
+                }
             } else if (getEscolhaTipo() == 1) {
                 ProdutoMercadoInterno produtoMercadoInterno = new ProdutoMercadoInterno();
                 produtoMercadoInterno.espProduto(produto, incentivo);
 
-                serviceMI.save(produtoMercadoInterno);
+                if(serviceMI.save(produtoMercadoInterno) != null) {
+                    status = true;
+                }
+            }
+            
+            if(status) {
+                GrowlMessage.statusMessage(Produto.class, GrowlMessage.MessageOption.SAVE, true);
+            } else {
+                GrowlMessage.statusMessage(Produto.class, GrowlMessage.MessageOption.SAVE, false);
             }
 
             produto = new Produto();
@@ -135,19 +145,27 @@ public class ProdutoMB implements Serializable {
     }
 
     public void removeProdutoMercadoInterno() {
-        serviceMI.remove(selectedProdutoMI);
+        removeProdutoMercadoInterno(selectedProdutoMI);
     }
 
     public void removeProdutoMercadoInterno(ProdutoMercadoInterno p) {
-        serviceMI.remove(p);
+        if(serviceMI.remove(p)) {
+            GrowlMessage.statusMessage(Produto.class, GrowlMessage.MessageOption.REMOVE, true);
+        } else {
+            GrowlMessage.statusMessage(Produto.class, GrowlMessage.MessageOption.REMOVE, false);
+        }
     }
 
     public void removeProdutoExportacao() {
-        serviceExp.remove(selectedProdutoExp);
+        removeProdutoExportacao(selectedProdutoExp);
     }
 
     public void removeProdutoExportacao(ProdutoExportacao p) {
-        serviceExp.remove(p);
+        if(serviceExp.remove(p)) {
+            GrowlMessage.statusMessage(Produto.class, GrowlMessage.MessageOption.REMOVE, true);
+        } else {
+            GrowlMessage.statusMessage(Produto.class, GrowlMessage.MessageOption.REMOVE, false);
+        }
     }
 
     public List<ProdutoExportacao> getProdutosExportacao() {
@@ -171,10 +189,7 @@ public class ProdutoMB implements Serializable {
     }
 
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Produto Editado",
-                ((Produto) event.getObject()).getNome());
-        FacesContext.getCurrentInstance().
-                addMessage(null, msg);
+        GrowlMessage.statusMessage(Produto.class, GrowlMessage.MessageOption.EDIT, true);
     }
 
     public void onRowSelectExp(SelectEvent event) {

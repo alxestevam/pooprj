@@ -38,7 +38,7 @@ public class Pedido implements Serializable {
     @Column(name = "DATA")
     private Date dataPedido;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "PEDIDO_ID")
     private final List<ItemPedido> itens = new ArrayList<>();
 

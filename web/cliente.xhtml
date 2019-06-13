@@ -29,7 +29,7 @@
                              action="#{clienteMB.addCliente}" 
                              update=":formCliente" />
 
-            <p:growl id="msgs" showDetail="false"/>
+            <p:growl id="msgs" showDetail="false" autoUpdate="true"/>
             <h:panelGroup id="groupDataTable">
                 <p:dataTable id="dataTableCliente"
                              var="f" value="#{clienteMB.clientes}"

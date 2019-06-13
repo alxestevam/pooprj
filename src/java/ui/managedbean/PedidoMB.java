@@ -26,10 +26,7 @@ import domain.service.ClienteService;
 import domain.service.PedidoService;
 import domain.service.ProdutoExportacaoService;
 import domain.service.ProdutoMercadoInternoService;
-import infra.data.repository.ClienteRepository;
-import infra.data.repository.PedidoRepository;
-import infra.data.repository.ProdutoExportacaoRepository;
-import infra.data.repository.ProdutoMercadoInternoRepository;
+import utils.GrowlMessage;
 
 /**
  *
@@ -123,14 +120,21 @@ public class PedidoMB implements Serializable {
     }
 
     public void addPedido() {
+        boolean status = false;
         Cliente cli = (Cliente) clienteService.getById(Cliente.class, clienteId);
         pedido.setCliente(cli);
         Calendar c = Calendar.getInstance();
         pedido.setData(c.getTime());
-        service.save(pedido);
+        status = service.save(pedido) != null;
         pedido.getCliente().addPedido(pedido);
-        clienteService.save(pedido.getCliente());
+        status = status && (clienteService.save(pedido.getCliente()) != null);
         pedido = new Pedido();
+        
+        if(status) {
+            GrowlMessage.statusMessage(Pedido.class, GrowlMessage.MessageOption.SAVE, true);
+        } else {
+            GrowlMessage.statusMessage(Pedido.class, GrowlMessage.MessageOption.SAVE, false);
+        }
     }
 
     public void addItemPedido() {
@@ -155,15 +159,18 @@ public class PedidoMB implements Serializable {
 
     public void removeItemPedido(Pedido pedido, ItemPedido item) {
         pedido.removeItem(item.getNumero());
-        //service.salvar(pedido);
     }
 
     public void removePedido() {
-        service.remove(selectedPedido);
+        removePedido(selectedPedido);
     }
 
     public void removePedido(Pedido c) {
-        service.remove(c);
+        if(service.remove(c)) {
+            GrowlMessage.statusMessage(Pedido.class, GrowlMessage.MessageOption.REMOVE, true);
+        } else {
+            GrowlMessage.statusMessage(Pedido.class, GrowlMessage.MessageOption.REMOVE, false);
+        }
     }
 
     public List<Pedido> getPedidos() {
@@ -183,10 +190,7 @@ public class PedidoMB implements Serializable {
     }
 
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Pedido Editado nº"
-                + ((Pedido) event.getObject()).getNumero());
-        FacesContext.getCurrentInstance().
-                addMessage(null, msg);
+        GrowlMessage.statusMessage(Pedido.class, GrowlMessage.MessageOption.EDIT, true);
     }
 
     public void onRowSelect(SelectEvent event) {

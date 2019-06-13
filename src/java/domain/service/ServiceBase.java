@@ -12,7 +12,6 @@ import java.util.List;
 /**
  *
  * @author 141812
- * @param <T>
  * @param <I>
  * @param <K>
  */
@@ -27,15 +26,15 @@ public abstract class ServiceBase<I extends Serializable, K extends Number> {
         return _repository.getAll(classe);
     }
     
-    public Serializable getById(Class<I> classe, K id) {
-        return _repository.getById(classe, id);
+    public I getById(Class<I> classe, K id) {
+        return (I) _repository.getById(classe, id);
     }
     
-    public void save(I obj) {
-        _repository.save(obj);
+    public I save(I obj) {
+        return (I) _repository.save(obj);
     }
     
-    public void remove(I obj) {
-        _repository.remove(obj);
+    public boolean remove(I obj) {
+        return _repository.remove(obj);
     }
 }

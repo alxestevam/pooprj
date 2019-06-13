@@ -12,7 +12,7 @@
     <ui:define name="principal">
         <h1>Novo Pedido</h1>
         <h:form id="formPedido">
-            <p:growl id="msgs" showDetail="true"/>
+            <p:growl id="msgs" showDetail="false" autoUpdate="true"/>
             <p:panelGrid columns="2" id="cadastroProdPanel">
                 <p:outputLabel value="Código do cliente:"/>
                 <p:selectOneMenu value="#{pedidoMB.clienteId}" style="width:100%">

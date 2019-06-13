@@ -22,7 +22,7 @@
             
              
 
-            <p:growl id="msgs" showDetail="true"/>
+            <p:growl id="msgs" showDetail="false" autoUpdate="true"/>
             <p:dataTable id="dataTableCategoria"
                          var="c" value="#{categoriaMB.categorias}"
                          rows="10"
@@ -49,7 +49,7 @@
                 <p:column style="width:32px">
                     <p:commandLink styleClass="ui-icon ui-icon-trash" 
                                    actionListener="#{categoriaMB.removeCategoria(c)}"
-                                   update="dataTableCategoria :formCategoria:msgs"
+                                   update="dataTableCategoria"
                                    />
                 </p:column>
 

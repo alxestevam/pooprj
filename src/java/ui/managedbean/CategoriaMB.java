@@ -10,13 +10,11 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import domain.model.Categoria;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import domain.service.CategoriaService;
-import infra.data.repository.CategoriaRepository;
 import utils.GrowlMessage;
 
 /**
@@ -40,27 +38,25 @@ public class CategoriaMB implements Serializable {
     }
 
     public void addCategoria() {
-        try {
-            service.save(categoria);
-            GrowlMessage.showMessage(FacesMessage.SEVERITY_INFO, "Categoria salva", null);
-        } catch (Exception e) {
-            GrowlMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Nao foi possivel salvar", null);
-        } finally {
-            categoria = new Categoria();
-            selectedCategoria = null;
+        if (service.save(categoria) != null) {
+            GrowlMessage.statusMessage(Categoria.class, GrowlMessage.MessageOption.SAVE, true);
+        } else {
+            GrowlMessage.statusMessage(Categoria.class, GrowlMessage.MessageOption.SAVE, false);
         }
+        categoria = new Categoria();
+        selectedCategoria = null;
+
     }
 
     public void removeCategoria() {
-        service.remove(selectedCategoria);
+        removeCategoria(selectedCategoria);
     }
 
     public void removeCategoria(Categoria c) {
-        try {
-            service.remove(c);
-            GrowlMessage.showMessage(FacesMessage.SEVERITY_INFO, "Categoria removida", null);
-        } catch (Exception e) {
-            GrowlMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Nao foi possivel remover", null);
+        if (service.remove(c)) {
+            GrowlMessage.statusMessage(Categoria.class, GrowlMessage.MessageOption.REMOVE, true);
+        } else {
+            GrowlMessage.statusMessage(Categoria.class, GrowlMessage.MessageOption.REMOVE, false);
         }
     }
 
@@ -77,7 +73,7 @@ public class CategoriaMB implements Serializable {
     }
 
     public void onRowEdit(RowEditEvent event) {
-        GrowlMessage.showMessage(FacesMessage.SEVERITY_INFO, "Categoria editada", null);
+        GrowlMessage.statusMessage(Categoria.class, GrowlMessage.MessageOption.EDIT, true);
     }
 
     public void onRowSelect(SelectEvent event) {

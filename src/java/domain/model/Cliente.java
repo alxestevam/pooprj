@@ -37,7 +37,7 @@ public class Cliente implements Serializable {
     @Version
     private Integer version;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
     private List<Pedido> pedidos = new ArrayList<>();
 
     public Cliente() {

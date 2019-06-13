@@ -43,7 +43,7 @@
                              action="#{produtoMB.addProduto()}" 
                              update=":formProd" />
 
-            <p:growl id="msgs" showDetail="true"/>
+            <p:growl id="msgs" showDetail="false" autoUpdate="true"/>
             
             
             <h:panelGroup id="groupDataTable" rendered="#{produtoMB.escolhaTipo eq 0}">

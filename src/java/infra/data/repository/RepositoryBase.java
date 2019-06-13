@@ -22,7 +22,7 @@ public abstract class RepositoryBase<T extends Serializable, I> {
 
     private static EntityManagerFactory emf;
     private EntityManager em;
-    
+
     public RepositoryBase() {
 
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
@@ -54,10 +54,15 @@ public abstract class RepositoryBase<T extends Serializable, I> {
         return saved;
     }
 
-    public void remove(T entity) {
-        getEntityManager().getTransaction().begin();
-        getEntityManager().remove(entity);
-        getEntityManager().getTransaction().commit();
+    public boolean remove(T entity) {
+        try {
+            getEntityManager().getTransaction().begin();
+            getEntityManager().remove(entity);
+            getEntityManager().getTransaction().commit();
+        } catch(Exception e) {
+            return false;
+        } 
+        return true;
     }
 
     public T getById(Class<T> classe, I pk) {

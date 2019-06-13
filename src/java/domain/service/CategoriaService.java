@@ -17,5 +17,16 @@ public class CategoriaService extends ServiceBase<Categoria, Integer> {
     public CategoriaService() {
         super(new CategoriaRepository());
     }
+    
+    @Override
+    public Categoria save(Categoria obj) {
+        if(obj.getDescricao() == null) return null;
+        
+        obj.setDescricao(obj.getDescricao().trim().toUpperCase());
+        
+        if(obj.getDescricao().isEmpty()) return null;
+        
+        return (Categoria) _repository.save(obj);
+    }
 
 }
