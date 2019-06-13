@@ -9,10 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import domain.model.Cliente;
 import domain.model.ItemPedido;
 import domain.model.Pedido;
@@ -125,9 +123,9 @@ public class PedidoMB implements Serializable {
         pedido.setCliente(cli);
         Calendar c = Calendar.getInstance();
         pedido.setData(c.getTime());
+        
         status = service.save(pedido) != null;
         pedido.getCliente().addPedido(pedido);
-        status = status && (clienteService.save(pedido.getCliente()) != null);
         pedido = new Pedido();
         
         if(status) {

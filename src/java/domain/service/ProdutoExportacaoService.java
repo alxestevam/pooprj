@@ -17,5 +17,16 @@ public class ProdutoExportacaoService extends ServiceBase<ProdutoExportacao, Int
     public ProdutoExportacaoService() {
         super(new ProdutoExportacaoRepository());
     }
+    
+    @Override
+    public ProdutoExportacao save(ProdutoExportacao obj) {
+        if (obj.getNome()== null) return null;
+       
+        obj.setNome(obj.getNome().trim().toUpperCase());
+        
+        if(obj.getNome().isEmpty()) return null;
+        
+        return (ProdutoExportacao) _repository.save(obj);
+    }
 
 }

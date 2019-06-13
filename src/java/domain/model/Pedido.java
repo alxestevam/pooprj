@@ -46,22 +46,33 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "CLIENTE_ID")
     private Cliente cliente;
 
-
     public Pedido() {
     }
 
     public void addItem(int quantidade, Produto produto) {
-        ItemPedido itemPedido = new ItemPedido(quantidade, produto);
-        itens.add(itemPedido);
+        boolean status = false;
+        for (ItemPedido item : itens) {
+            if (item.getProduto().equals(produto)) {
+                item.setQuantidade(item.getQuantidade() + quantidade);
+                status = true;
+                break;
+            }
+        }
+        if (!status) {
+            ItemPedido itemPedido = new ItemPedido(quantidade, produto);
+            itens.add(itemPedido);
+        }
     }
 
     public ArrayList<ItemPedido> getListItens() {
         ArrayList<ItemPedido> list = new ArrayList<>();
         ItemPedido itemClone;
         
+        int count = 0;
+
         for (ItemPedido item : itens) {
             itemClone = new ItemPedido(item.getQuantidade(), item.getProduto());
-            itemClone.setNumero(item.getNumero());
+            itemClone.setNumero(++count);
             list.add(itemClone);
         }
         return list;

@@ -17,5 +17,16 @@ public class ProdutoMercadoInternoService extends ServiceBase<ProdutoMercadoInte
     public ProdutoMercadoInternoService() {
         super(new ProdutoMercadoInternoRepository());
     }
+    
+    @Override
+    public ProdutoMercadoInterno save(ProdutoMercadoInterno obj) {
+        if (obj.getNome()== null) return null;
+       
+        obj.setNome(obj.getNome().trim().toUpperCase());
+        
+        if(obj.getNome().isEmpty()) return null;
+        
+        return (ProdutoMercadoInterno) _repository.save(obj);
+    }
 
 }

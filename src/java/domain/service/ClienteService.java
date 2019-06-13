@@ -20,7 +20,7 @@ public class ClienteService extends ServiceBase<Cliente, Integer>{
     
     @Override
     public Cliente save(Cliente obj) {
-        if (obj.getEndereco() != null && obj.getNome() != null) return null;
+        if (obj.getEndereco() == null || obj.getNome() == null) return null;
         
         obj.setEndereco(obj.getEndereco().trim().toUpperCase());
         obj.setNome(obj.getNome().trim().toUpperCase());

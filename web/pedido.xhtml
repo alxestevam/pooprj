@@ -50,9 +50,7 @@
                 <p:ajax event="rowSelect" listener="#{pedidoMB.onRowSelect}" update=":formPedido" />
                 <p:ajax event="rowUnselect" listener="#{pedidoMB.onRowUnselect}" update=":formPedido" />
                 
-                <p:column headerText="Número">
-                    <p:outputLabel value="#{item.numero}"/>
-                </p:column>
+                
 
                 <p:column headerText="Produto">
                     <p:outputLabel value="#{item.produto.nome}"/>
@@ -118,7 +116,7 @@
                 
                 <p:column style="width:32px">
                     <p:commandLink styleClass="ui-icon ui-icon-trash" 
-                                   actionListener="#{pedidoMB.removePedido(f)}"
+                                   actionListener="#{pedidoMB.removePedido(p)}"
                                    update="dataTablePedido"
                                    />
                 </p:column>
@@ -172,12 +170,7 @@
                                 <p:outputLabel value="R$ #{itemPedido.totalItem()}"/>
                             </p:column>
 
-                            <p:column style="width:32px">
-                                <p:commandLink styleClass="ui-icon ui-icon-trash" 
-                                               actionListener="#{pedidoMB.removeItemPedido(pedidoMB.selectedPedido, itemPedido)}"
-                                               update="dataTableItemPedidoDetail"
-                                               />
-                            </p:column>
+                           
 
                         </p:dataTable>
                     </h:panelGroup>

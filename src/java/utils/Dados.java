@@ -22,30 +22,41 @@ import domain.model.ProdutoMercadoInterno;
  * @author glauc
  */
 public class Dados {
+
     private static ArrayList<Categoria> LISTA_CATEGORIAS;
     private static ArrayList<Produto> LISTA_PRODUTOSEXP;
     private static ArrayList<Produto> LISTA_PRODUTOSMI;
     private static ArrayList<Cliente> LISTA_CLIENTES;
     private static ArrayList<Pedido> LISTA_PEDIDOS;
     private static EntityManagerFactory emf;
-    
+
     public static void main(String[] args) {
         emf = Persistence.createEntityManagerFactory("PrjLojaPU");
         Dados.init();
-        
+
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            for(Categoria c : LISTA_CATEGORIAS)
+            for (Categoria c : LISTA_CATEGORIAS) {
+                c.setDescricao(c.getDescricao().trim().toUpperCase());
                 em.merge(c);
-            for(Produto c : LISTA_PRODUTOSEXP)
+            }
+            for (Produto c : LISTA_PRODUTOSEXP) {
+                c.setNome(c.getNome().trim().toUpperCase());
                 em.merge(c);
-            for(Produto c : LISTA_PRODUTOSMI)
+            }
+            for (Produto c : LISTA_PRODUTOSMI) {
+                c.setNome(c.getNome().trim().toUpperCase());
                 em.merge(c);
-            for(Cliente c : LISTA_CLIENTES)
+            }
+            for (Cliente c : LISTA_CLIENTES) {
+                c.setNome(c.getNome().trim().toUpperCase());
+                c.setEndereco(c.getEndereco().trim().toUpperCase());
                 em.merge(c);
-            for(Pedido c : LISTA_PEDIDOS)
+            }
+            for (Pedido c : LISTA_PEDIDOS) {
                 em.merge(c);
+            }
             em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Não foi possivel salvar");
@@ -60,13 +71,13 @@ public class Dados {
         LISTA_PRODUTOSMI = new ArrayList();
         LISTA_CLIENTES = new ArrayList();
         LISTA_PEDIDOS = new ArrayList();
-        
+
         Categoria bebidas_alcoolicas = new Categoria("Bebidas Alcoólicas");
         Categoria bebidas_nao_alcoolicas = new Categoria("Bebidas Não Alcoólicas");
         Categoria alimentos = new Categoria("Alimentos");
         Categoria eletrodomesticos = new Categoria("Eletrodomésticos");
         Categoria eletronicos = new Categoria("Eletrônicos");
-        
+
         Produto askov = new ProdutoMercadoInterno(1, "Askov (Un)", bebidas_alcoolicas, 22, 0, 5, true);
         Produto jack = new ProdutoMercadoInterno(2, "Jack Daniels (Un)", bebidas_alcoolicas, 135, 0, 15, true);
         Produto catuaba = new ProdutoMercadoInterno(3, "Catuaba (Un)", bebidas_alcoolicas, 15, 0, 5, true);
@@ -82,31 +93,31 @@ public class Dados {
         Produto dvd = new ProdutoExportacao(13, "DVD - Player", eletronicos, 350, 0, 50, "Portugal");
         Produto pc = new ProdutoExportacao(14, "Computador", eletronicos, 2250, 0, 260, "Portugal");
         Produto ps4 = new ProdutoExportacao(15, "Playstation 4", eletronicos, 1850, 0, 340, "China");
-        
+
         Cliente a = new Cliente(1, "Alexandre Estevam", "Av. Dr Lauro de Souza Lima", "11996910034", 0, 0);
         Cliente b = new Cliente(2, "Felipe Eiji", "Rua. Sei la", "11923456789", 0, 0);
         Cliente c = new Cliente(3, "Jesus Christ", "Heaven", "777777", 0, 0);
-        
+
         Date systemDate = new Date();
-        
+
         Pedido d = new Pedido();
         d.addItem(1, fogao);
         d.addItem(1, picanha);
         d.setData(systemDate);
         d.setCliente(a);
-        
+
         Pedido e = new Pedido();
         e.addItem(2, geladeira);
         e.addItem(4, pizza);
         e.setData(systemDate);
         e.setCliente(b);
-        
+
         LISTA_CATEGORIAS.add(bebidas_alcoolicas);
         LISTA_CATEGORIAS.add(bebidas_nao_alcoolicas);
         LISTA_CATEGORIAS.add(alimentos);
         LISTA_CATEGORIAS.add(eletrodomesticos);
         LISTA_CATEGORIAS.add(eletronicos);
-        
+
         LISTA_PRODUTOSMI.add(askov);
         LISTA_PRODUTOSMI.add(jack);
         LISTA_PRODUTOSMI.add(catuaba);
@@ -117,22 +128,19 @@ public class Dados {
         LISTA_PRODUTOSMI.add(picanha);
         LISTA_PRODUTOSEXP.add(pizza);
         LISTA_PRODUTOSEXP.add(geladeira);
-        LISTA_PRODUTOSEXP.add(fogao);        
+        LISTA_PRODUTOSEXP.add(fogao);
         LISTA_PRODUTOSEXP.add(cafeteira);
         LISTA_PRODUTOSEXP.add(dvd);
         LISTA_PRODUTOSEXP.add(pc);
         LISTA_PRODUTOSEXP.add(ps4);
-        
+
         LISTA_CLIENTES.add(a);
         LISTA_CLIENTES.add(b);
         LISTA_CLIENTES.add(c);
-        
+
         LISTA_PEDIDOS.add(d);
         LISTA_PEDIDOS.add(e);
-        
-        
-        
-        
+
     }
 
 }
